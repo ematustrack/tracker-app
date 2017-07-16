@@ -1,5 +1,5 @@
 ﻿<Properties StartupConfiguration="{659B1D8B-9E27-4038-B886-3721E8A3DBCF}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="test2/App.xaml.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Droid/MainApplication.cs">
     <Files>
       <File FileName="test2/Views/ItemDetailPage.xaml.cs" Line="68" Column="20" />
       <File FileName="test2/Services/PictureService.cs" Line="75" Column="33" />
@@ -8,6 +8,12 @@
       <File FileName="test2/App.xaml.cs" Line="55" Column="18" />
       <File FileName="test2/Services/IPictureStore.cs" Line="13" Column="20" />
       <File FileName="test2/ViewModels/ItemDetailViewModel.cs" Line="47" Column="43" />
+      <File FileName="test2/Helpers/MessagingCenterAlert.cs" Line="1" Column="1" />
+      <File FileName="test2/Helpers/ObservableObject.cs" Line="1" Column="1" />
+      <File FileName="test2/Helpers/ObservableRangeCollection.cs" Line="92" Column="7" />
+      <File FileName="test2/Converters/DataConverter.cs" Line="1" Column="1" />
+      <File FileName="test2/Converters/ImageConverter.cs" Line="1" Column="1" />
+      <File FileName="Droid/MainApplication.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
