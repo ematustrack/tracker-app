@@ -63,8 +63,7 @@ namespace test2
         }
 
         async Task ExecuteLoadItems() {
-            Console.WriteLine("EXECUTE LOAD ITEMS");
-			if (IsBusy)
+            if (IsBusy)
 				return;
             IsBusy = true;
 

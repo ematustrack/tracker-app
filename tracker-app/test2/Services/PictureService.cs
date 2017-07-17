@@ -87,7 +87,6 @@ namespace test2
                 return false;
 
             HttpClientHandler handler = new HttpClientHandler();
-            Console.WriteLine(item);
 
 			using(var client = new HttpClient(handler, true)){
 
@@ -96,14 +95,10 @@ namespace test2
 				//var uri = new Uri(string.Format(App.BackendUrl, string.Empty));
                 var uri = new Uri(string.Format(App.BackendUrl+"/server/insert_data/"));
 				var json = JsonConvert.SerializeObject(item);
-                Console.WriteLine("Json -> "+ json);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
 				var resp = await client.PostAsync(uri, content);
-                Console.WriteLine("STATUS RESPONSE ====== >>>"+ resp.StatusCode.ToString());
                 string jsonString = await resp.Content.ReadAsStringAsync();
                 Response response = JsonConvert.DeserializeObject<Response>(jsonString);
-                Console.WriteLine("jsonString "+ jsonString);
-                Console.WriteLine("Response -> "+ response.status);
 
                 return response.status == 200;
             }

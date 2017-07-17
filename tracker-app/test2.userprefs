@@ -3,7 +3,9 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint enabled="false" file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Views/ItemsPage.xaml.cs" relfile="test2/Views/ItemsPage.xaml.cs" line="32" column="1" />
+      <Breakpoint enabled="false" file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Views/ItemsPage.xaml.cs" relfile="test2/Views/ItemsPage.xaml.cs" line="30" column="1" />
+      <Breakpoint file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Views/ItemDetailPage.xaml.cs" relfile="test2/Views/ItemDetailPage.xaml.cs" line="116" column="1" />
+      <Breakpoint file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Views/ItemDetailPage.xaml.cs" relfile="test2/Views/ItemDetailPage.xaml.cs" line="134" column="127" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
@@ -13,5 +15,5 @@
   <DisabledProjects>
     <String>MobileAppService/test2.MobileAppService.csproj</String>
   </DisabledProjects>
-  <MonoDevelop.Ide.ItemProperties.test2.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.0715f74ba8c60f3a" />
+  <MonoDevelop.Ide.ItemProperties.test2.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Android_Accelerated_x86" />
 </Properties>

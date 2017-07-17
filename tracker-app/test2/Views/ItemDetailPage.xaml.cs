@@ -53,7 +53,6 @@ namespace test2
             //System.Diagnostics.Debugger.Break();
 
             var result = await viewModel.SaveItems(st, folio, note);
-            Console.WriteLine("Result send photo ---->>> " + result);
             if (result)
             {
                 await viewModel.DataStore.UpdateStateAsync(true,"#E0F8E0", viewModel.Item);
@@ -108,11 +107,11 @@ namespace test2
             var picker = (Picker)sender;
             var selectItem = picker.SelectedIndex;
             viewModel.Item.ST_string = picker.Items[selectItem];
-            Console.WriteLine("Fin de función -_-->_<__>_<");
             var folios = getST(picker.Items[selectItem]).folios;
             this.Folio.ItemsSource = folios.Select(x => x.number).ToArray();
             viewModel.selectedST = new ST(picker.Items[selectItem]);
             viewModel.Item.ST_string = picker.Items[selectItem];
+            Console.WriteLine(picker.Items[selectItem]);
             //viewModel.DataStore.UpdateItemAsync(picker.Items[selectItem], "", this.notes.Text, viewModel.Item);
             await viewModel.SaveItemAsync(picker.Items[selectItem], "", this.notes.Text, viewModel.Item);
 
@@ -127,20 +126,12 @@ namespace test2
         */
         async void Handle_SelectedIndexChangedFolioAsync(object sender, System.EventArgs e)
         {
-            Console.WriteLine("HANDLE_SELECTED");
-            Console.WriteLine("Aqui ========-> " + viewModel.selectedST.st);
             if (ST.SelectedIndex < 0)
                 return;
 
             var picker = (Picker)sender;
             var selectItem = picker.SelectedIndex;
-            //viewModel.LoadItemsCommand.Execute(null);
-            Console.WriteLine("Viendo la ST de selected " + viewModel.selectedST.st);
-
-            await viewModel.SaveItemAsync(viewModel.selectedST.st, picker.Items[selectItem], this.notes.Text, viewModel.Item);
-
-			//viewModel.DataStore.UpdateItemAsync(viewModel.selectedST.st, picker.Items[selectItem], this.notes.Text, viewModel.Item);
-			//await p.UpdateItemAsync(viewModel.selectedST.st, picker.Items[selectItem], this.notes.Text, viewModel.Item);
+            await viewModel.SaveItemAsync(viewModel.Item.ST_string, picker.Items[selectItem], this.notes.Text, viewModel.Item);
         }
         public ST getST(string st)
 		{

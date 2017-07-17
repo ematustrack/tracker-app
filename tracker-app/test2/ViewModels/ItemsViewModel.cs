@@ -147,20 +147,8 @@ namespace test2
 			{
 				Items.Clear();
                 var items = await DataStore.GetItemsAsync(false);
-				StItems = (List<ST>)await STDataStore.GetSTItemsAsync(true);
-                /*if (items.Count() > 0) {
-	                items = items.Select(x => { 
-	                    var s = getST(x.ST_string); 
-	                    x.ST_string = s.st; 
-	                    x.Folio_string = getFolio(x.Folio, s).number;
-	                    return x; 
-	                });
-                    Console.WriteLine("ITEMS, itemsViewModel.cs -> " + items.ToArray());
-                 }
-                 */
-				//foreach (var item in items) {
-				//	item.FileName = "/storage/emulated/0/Android/data/com.companyname.test/files/Pictures/Sample/" + item.FileName;
-				//}
+				//StItems = (List<ST>)await STDataStore.GetSTItemsAsync(true);
+
 				Items.ReplaceRange(items);
 			}
 			catch (Exception ex)

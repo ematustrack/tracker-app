@@ -13,8 +13,7 @@ namespace test2
 
 		public ItemsPage(PictureService picService)
 		{
-            Console.WriteLine("ItemsPage Constructor");
-			InitializeComponent();
+            InitializeComponent();
 
 			BindingContext = this.viewModel = new ItemsViewModel(picService);
             p = picService;
@@ -23,8 +22,7 @@ namespace test2
 
 		async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
 		{
-            Console.WriteLine("ON item selected");
-			var item = args.SelectedItem as PicItem;
+            var item = args.SelectedItem as PicItem;
 			if (item == null)
 				return;
             //viewModel.RemoveItemCommand(item);
@@ -50,11 +48,9 @@ namespace test2
 		protected override void OnAppearing()
 		{
 			base.OnAppearing();
-            Console.WriteLine("ON APPEARING");
             if (viewModel.Items.Count == 0)
 			{
-                Console.WriteLine("ON APPEARING ITEMS PAGES!");
-				viewModel.LoadItemsCommand.Execute(null);
+                viewModel.LoadItemsCommand.Execute(null);
 
 
 			}

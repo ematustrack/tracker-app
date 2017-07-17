@@ -15,7 +15,7 @@ namespace test2
 			client = new HttpClient();
 			client.MaxResponseContentBufferSize = 256000;
             client.Timeout = TimeSpan.FromMinutes(3);
-			url = @"https://f7969f44.ngrok.io";
+			url = @"https://5582bb46.ngrok.io";
 		}
 
 		public Task<bool> AddItemAsync(ST item)
@@ -40,17 +40,12 @@ namespace test2
 			
             //System.Diagnostics.Debugger.Break();
             var response = await client.GetAsync(uri+"server/getSTFolios/");
-            Console.WriteLine(uri + "server/getSTFolios/");
-            Console.WriteLine("GetItemsAsync!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-            Console.WriteLine("STATUS CODE " +response.IsSuccessStatusCode);
-            Console.WriteLine(response);
+
             if (response.IsSuccessStatusCode)
 			{
 				var content = await response.Content.ReadAsStringAsync();
-                Console.WriteLine(content);
                 var Item = JsonConvert.DeserializeObject<List<ST>>(content);
-                Console.WriteLine("HERE IS ---> " + Item.ToString());
-				return Item;
+                return Item;
 
 			}
 			return new List<ST>();
