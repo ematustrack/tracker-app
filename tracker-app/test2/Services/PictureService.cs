@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Plugin.Connectivity;
 using SQLite.Net;
-
+using Xamarin.Forms;
 
 namespace test2
 {
@@ -71,6 +71,15 @@ namespace test2
 
 			return Task.FromResult(item);
 		}
+
+        Task<PicItem> IPictureStore<PicItem>.UpdateStateAsync(bool state, string color, PicItem item)
+        {
+            item.Color = color;
+            item.Sent = state;
+            sql.Update(item);
+
+            return Task.FromResult(item);
+        }
 
         public async Task<bool> SendPicItemAsync(PicItem item)
         {

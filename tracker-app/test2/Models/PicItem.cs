@@ -11,6 +11,7 @@ namespace test2
         public string CreatedOn { get; set; }
         public string FileName { get; set; }
         public bool Sent { get; set; }
+        public string Color { get; set; }
         public DateTimeOffset DateSent { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }

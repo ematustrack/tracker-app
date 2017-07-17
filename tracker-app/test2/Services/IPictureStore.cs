@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 namespace test2
 {
     public interface IPictureStore<T>
@@ -11,6 +12,6 @@ namespace test2
         Task<T> GetItemAsync(string id);
         Task<IEnumerable<T>> GetItemsAsync(bool forceRefresh = false);
         Task<bool> SendPicItemAsync(PicItem item);
-
+        Task<PicItem> UpdateStateAsync(bool state,string color, T item);
     }
 }

@@ -18,6 +18,7 @@ namespace test2
 
 			BindingContext = this.viewModel = new ItemsViewModel(picService);
             p = picService;
+
 		}
 
 		async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
@@ -30,9 +31,11 @@ namespace test2
 
             var itemdetail = new ItemDetailViewModel(p, item);
             await Navigation.PushAsync(new ItemDetailPage(itemdetail));
-            
-			// Manually deselect item
+
+            // Manually deselect item
+
 			ItemsListView.SelectedItem = null;
+            
 		}
 
 		async void AddItem_Clicked(object sender, EventArgs e)

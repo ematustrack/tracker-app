@@ -368,7 +368,6 @@
 /Users/fabulias/Documents/Codes/tracker/tracker-app/Droid/bin/Debug/Plugin.SQLiteConnection.pdb
 /Users/fabulias/Documents/Codes/tracker/tracker-app/Droid/bin/Debug/Plugin.SQLiteConnection.dll.mdb
 /Users/fabulias/Documents/Codes/tracker/tracker-app/Droid/bin/Debug/Plugin.SQLiteConnection.xml
-/Users/fabulias/Documents/Codes/tracker/tracker-app/Droid/obj/Debug/test2.Droid.csprojResolveAssemblyReference.cache
 /Users/fabulias/Documents/Codes/tracker/tracker-app/Droid/obj/Debug/XbdMerge/Xamarin.Android.Support.Annotations.dll.stamp
 /Users/fabulias/Documents/Codes/tracker/tracker-app/Droid/obj/Debug/XbdMerge/Xamarin.Android.Support.Compat.dll.stamp
 /Users/fabulias/Documents/Codes/tracker/tracker-app/Droid/obj/Debug/XbdMerge/Xamarin.Android.Support.Core.UI.dll.stamp

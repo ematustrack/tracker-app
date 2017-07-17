@@ -1,28 +1,9 @@
 ﻿<Properties StartupConfiguration="{659B1D8B-9E27-4038-B886-3721E8A3DBCF}|Default">
-  <MonoDevelop.Ide.Workbench ActiveDocument="Droid/MainApplication.cs">
-    <Files>
-      <File FileName="test2/Views/ItemDetailPage.xaml.cs" Line="68" Column="20" />
-      <File FileName="test2/Services/PictureService.cs" Line="75" Column="33" />
-      <File FileName="test2/Views/ItemsPage.xaml.cs" Line="50" Column="1" />
-      <File FileName="test2/ViewModels/ItemsViewModel.cs" Line="80" Column="26" />
-      <File FileName="test2/App.xaml.cs" Line="55" Column="18" />
-      <File FileName="test2/Services/IPictureStore.cs" Line="13" Column="20" />
-      <File FileName="test2/ViewModels/ItemDetailViewModel.cs" Line="47" Column="43" />
-      <File FileName="test2/Helpers/MessagingCenterAlert.cs" Line="1" Column="1" />
-      <File FileName="test2/Helpers/ObservableObject.cs" Line="1" Column="1" />
-      <File FileName="test2/Helpers/ObservableRangeCollection.cs" Line="92" Column="7" />
-      <File FileName="test2/Converters/DataConverter.cs" Line="1" Column="1" />
-      <File FileName="test2/Converters/ImageConverter.cs" Line="1" Column="1" />
-      <File FileName="Droid/MainApplication.cs" Line="1" Column="1" />
-    </Files>
-  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint enabled="false" file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Views/ItemsPage.xaml.cs" relfile="test2/Views/ItemsPage.xaml.cs" line="31" column="1" />
-      <Breakpoint file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Services/PictureService.cs" relfile="test2/Services/PictureService.cs" line="60" column="1" />
-      <Breakpoint file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Services/PictureService.cs" relfile="test2/Services/PictureService.cs" line="70" column="1" />
-      <Breakpoint file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Services/PictureService.cs" relfile="test2/Services/PictureService.cs" line="40" column="1" />
+      <Breakpoint enabled="false" file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Views/ItemsPage.xaml.cs" relfile="test2/Views/ItemsPage.xaml.cs" line="32" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
@@ -32,5 +13,5 @@
   <DisabledProjects>
     <String>MobileAppService/test2.MobileAppService.csproj</String>
   </DisabledProjects>
-  <MonoDevelop.Ide.ItemProperties.test2.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.Android_Accelerated_x86" />
+  <MonoDevelop.Ide.ItemProperties.test2.Droid AndroidDesignerPreferredDevice="Nexus 4" PreferredExecutionTarget="Android.0715f74ba8c60f3a" />
 </Properties>

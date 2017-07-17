@@ -56,12 +56,12 @@ namespace test2
             Console.WriteLine("Result send photo ---->>> " + result);
             if (result)
             {
-                viewModel.Item.Sent = true;
+                await viewModel.DataStore.UpdateStateAsync(true,"#E0F8E0", viewModel.Item);
                 Toast.MakeText(Forms.Context, "Foto enviada correctamente", ToastLength.Long).Show();
             }
             else
             {
-                viewModel.Item.Sent = false;
+                await viewModel.DataStore.UpdateStateAsync(false,"#FFFFFF", viewModel.Item);
 				Toast.MakeText(Forms.Context, "Foto NO fue enviada", ToastLength.Long).Show();
             }
             var x = 0;
