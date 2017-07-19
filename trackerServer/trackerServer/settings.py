@@ -25,7 +25,7 @@ SECRET_KEY = '%u(pc+4+gk46g4$lk+&8843gpl*hcqkqbl)t#v4-+#=u)b^o0t'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [u'localhost', u'5582bb46.ngrok.io']
+ALLOWED_HOSTS = [u'localhost', u'5582bb46.ngrok.io', u'54.175.253.151']
 
 
 # Application definition
@@ -75,8 +75,12 @@ WSGI_APPLICATION = 'trackerServer.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'tracker_db',
+        'USER': 'username',
+        'PASSWORD': 'pass1234',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
