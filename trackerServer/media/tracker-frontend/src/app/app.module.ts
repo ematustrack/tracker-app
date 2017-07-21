@@ -29,7 +29,6 @@ import { FilterComponent } from './filter-time/filter/filter.component';
     MdToolbarModule,
     MdCardModule,
     FormsModule,
-    ReactiveFormsModule,
     MdInputModule,
     MdButtonModule,
     MdDatepickerModule,

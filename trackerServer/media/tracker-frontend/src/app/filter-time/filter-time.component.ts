@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { MdButtonModule } from '@angular/material';
-import {NgModel} from '@angular/forms';
 
 @Component({
   selector: 'app-filter-time',
@@ -18,10 +17,5 @@ export class FilterTimeComponent implements OnInit {
     this.defaultDateEnd = date_end.toISOString().replace(/T.*/, '').split('-').reverse().join('-');
     date.setDate(date.getDate() - 1);
     this.defaultDateStart = date.toISOString().replace(/T.*/, '').split('-').reverse().join('-');
-
-    console.log("Fecha inicial -> ", this.defaultDateStart);
-    console.log("Fecha final -> ", this.defaultDateEnd);
   }
-
-
 }
