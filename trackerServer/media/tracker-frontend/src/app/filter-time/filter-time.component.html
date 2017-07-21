@@ -1,0 +1,15 @@
+<div
+  class="container"
+  fxLayout
+  fxLayout.xs="column"
+  fxLayoutAlign="center"
+  fxLayoutGap="10px"
+  fxLayoutGap.xs="0">
+  <div class="item item-1" fxFlex="30%" fxFlexOrder="1">
+    <app-filter type_d="Fecha de inicio" [date]=defaultDateStart></app-filter>
+  </div>
+  <div class="item item-2" fxFlex="30%" fxFlexOrder="2">
+    <app-filter type_d="Fecha de termino" [date]=defaultDateEnd></app-filter>
+  </div>
+  <div class="item item-3" fxFlex fxFlexOrder="3"></div>
+</div>
