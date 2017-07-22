@@ -1,18 +1,29 @@
 <md-card>
   <md-card-title>BUSCADOR DE IMÁGENES
   </md-card-title>
-  <div fxLayout="row"></div>
   <md-card-subtitle>FILTROS</md-card-subtitle >
   <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
     <md-card>
-      <app-filter-time>Loading filter time...</app-filter-time>
-      <button md-raised-button>Buscar</button>
+      <div class="container" fxLayout fxLayoutGap.xs="0">
+        <div class="item item-1" fxFlex="40%" fxFlexOrder="1">
+          <app-filter-time>Loading filter time...</app-filter-time>
+        </div>
+        <div class="item item-2" fxFlex="40%" fxFlexOrder="2">
+          <button md-raised-button>Buscar</button>
+        </div>
+        <div class="item item-3" fxFlex fxFlexOrder="3"></div>
+      </div>
+
     </md-card>
   </form>
 
   <md-card-content>
     <md-card style="background-color:rgba(176,224,230,0.2);">
       <md-card-title>RESULTADOS</md-card-title>
+      <div *ngIf="active">
+        <app-data-table>Loading data-table...</app-data-table>
+      </div>
+
     </md-card>
   </md-card-content>
 </md-card>
