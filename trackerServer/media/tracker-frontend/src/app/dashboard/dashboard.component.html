@@ -4,16 +4,20 @@
   <md-card-subtitle>FILTROS</md-card-subtitle >
   <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
     <md-card>
-      <div class="container" fxLayout fxLayoutGap.xs="0">
-        <div class="item item-1" fxFlex="40%" fxFlexOrder="1">
+      <div
+        class="container"
+        fxLayout
+        fxLayout.xs="column"
+        fxLayoutAlign="center"
+        fxLayoutGap="10px"
+        fxLayoutGap.xs="0">
+        <div class="item item-1" fxFlex="90%" fxFlexOrder="1">
           <app-filter-time>Loading filter time...</app-filter-time>
         </div>
-        <div class="item item-2" fxFlex="40%" fxFlexOrder="2">
+        <div class="item item-2" fxFlex="10%" fxFlexOrder="2">
           <button md-raised-button>Buscar</button>
         </div>
-        <div class="item item-3" fxFlex fxFlexOrder="3"></div>
       </div>
-
     </md-card>
   </form>
 

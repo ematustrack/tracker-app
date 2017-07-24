@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ViewChild } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CdkTableModule } from '@angular/cdk';
-import {HttpModule} from '@angular/http';
+import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -19,6 +19,8 @@ import { FilterTimeComponent } from './filter-time/filter-time.component';
 import { FilterComponent } from './filter-time/filter/filter.component';
 import { DataTableComponent } from './data-table/data-table.component';
 
+import {DataTableService} from './shared/data-table.service';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +30,7 @@ import { DataTableComponent } from './data-table/data-table.component';
     DataTableComponent,
   ],
   imports: [
+    AppRoutingModule,
     BrowserModule,
     MdToolbarModule,
     MdCardModule,

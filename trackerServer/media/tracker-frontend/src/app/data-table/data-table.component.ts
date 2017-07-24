@@ -10,6 +10,11 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
 
+import { DataTableService } from '../shared/data-table.service';
+import { DataTable } from '../shared/data-table';
+import { Router }   from '@angular/router';
+
+
 /**
  * @title Feature-rich data table
  */
@@ -23,12 +28,20 @@ export class DataTableComponent {
   exampleDatabase = new ExampleDatabase();
   selection = new SelectionModel<string>(true, []);
   dataSource: ExampleDataSource | null;
+  photos: DataTable[];
 
   @ViewChild(MdPaginator) paginator: MdPaginator;
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild('filter') filter: ElementRef;
 
+  constructor(
+    private router: Router,
+    datatableService: DataTableService) { }
+  getData(): void {
+    this.datatableService.getHero().then(photos => this.photos = photos);
+  }
   ngOnInit() {
+
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
