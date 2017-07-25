@@ -49,7 +49,7 @@ import {DataTableService} from './shared/data-table.service';
     AppRoutingModule,
     CdkTableModule,
   ],
-  providers: [],
+  providers: [DataTableService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

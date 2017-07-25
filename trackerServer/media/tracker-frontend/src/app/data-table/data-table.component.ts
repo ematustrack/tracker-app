@@ -36,12 +36,13 @@ export class DataTableComponent {
 
   constructor(
     private router: Router,
-    datatableService: DataTableService) { }
+    private datatableService: DataTableService) { }
   getData(): void {
     this.datatableService.getHero().then(photos => this.photos = photos);
   }
   ngOnInit() {
-
+    this.getData();
+    console.log(this.photos);
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)

@@ -1,20 +1,27 @@
 import { Injectable } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Headers, RequestOptions, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import { DataTable } from './data-table';
 
 @Injectable()
 export class DataTableService {
-  private Url = 'localhost:8080';  // URL to web api
+  private Url = 'http://localhost:8000';  // URL to web api
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
   constructor(private http: Http) { }
-  getHero(id: number): Promise<DataTable> {
-    const url = `${this.Url}/server/datatable`;
-    return this.http.get(url)
+
+  getHero(): Promise<DataTable[]> {
+    const url = `${this.Url}/server/datatable/`;
+    const options = new RequestOptions({ headers: this.headers });
+
+    console.log("[url request] ", url);
+    console.log("[headers] ", this.headers);
+    console.log("[options] ", options);
+    return this.http
+      .post(url, JSON.stringify({ headers: this.headers }))
       .toPromise()
-      .then(response => response.json().data as DataTable)
+      .then(response => response.json().data as DataTable[])
       .catch(this.handleError);
   }
   private handleError(error: any): Promise<any> {

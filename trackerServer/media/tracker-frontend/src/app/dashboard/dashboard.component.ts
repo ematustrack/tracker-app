@@ -18,6 +18,6 @@ export class DashboardComponent implements OnInit {
   }
   onSubmit(f: NgForm) {
     this.active = true;
-    console.log("ACA -> ", f.value);
+    console.log("Form values -> ", f.value);
   }
 }
