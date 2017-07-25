@@ -6,12 +6,16 @@ from django.core import serializers
 from django.db import connection
 from itertools import groupby
 from django.db.models import Count
+from django.utils.dateparse import parse_datetime
+from django.utils.timezone import is_aware, make_aware
 
+import dateutil.parser
+import os.path
 import json
 import pytz
 from base64 import b64encode, b64decode
 from datetime import datetime, date
-from server.models import St_folio, ST, Folio
+from server.models import St_folio, ST, Folio, St_work
 
 from django.shortcuts import render
 
@@ -44,6 +48,7 @@ def insertData(request):
         date = None
         try:
             imgBase64 = data['FileName']
+            print "imgBase64 -> ", type(imgBase64)
             date = data['CreatedOn']
             st = data['ST_string']
             folio = data['Folio_string']
@@ -65,7 +70,7 @@ def insertData(request):
         date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         date_time_path = datetime.now().strftime("%Y-%m-%d-%H-%M-%S")
         # Create path to a image
-        path="images/"+str(date_time_path)+str(data['ST_string'])+str(data['Folio_string'])+".png"
+        path="images/"+str(date_time_path)+str(data['ST_string'])+str(data['Folio_string'])+".jpg"
         #print "time -> ", timezone.localtime(timezone.now())
         try:
             st_f=St_folio.objects.get(idST=st, idFolio=folio)
@@ -85,6 +90,7 @@ def insertData(request):
         #Insert image in route path
         try:
             with open(path, "wb") as fh:
+                print "path -> ", path
                 fh.write(imgBase64.decode('base64'))
         except:
             response = {
@@ -224,45 +230,82 @@ def getFolioOfST(request):
         }
         return HttpResponse(json.dumps(response), content_type='application/json')
 
-def getData(request):
-    print "REQUEST ---> ", request
+def get_aware_datetime(date_str):
+    ret = parse_datetime(date_str)
+    if not is_aware(ret):
+        ret = make_aware(ret)
+    return ret
+
+def dataTable(request):
     if request.method == "POST":
+        print "[dataTable request] ", request
+        
         data = None
         try:
             body_unicode = request.body.decode('utf-8')
-            body = json.loads(body_unicode)
-            data = body
+            data = json.loads(body_unicode)
         except ValueError:
+            print "Error with json input"
             response = {
                 "message":"error",
                 "status":406,
             }
             return HttpResponse(json.dumps(response), content_type='application/json')
 
-        startDate=None
-        endDate=None
+        start = None
+        end = None
+
         try:
-            startDate=data['start']
-            endDate=data['end']
+            start = data['start']
+            end = data['end']
         except:
             response = {
              "message":"Error in params",
              "status":406,
             }
             return HttpResponse(json.dumps(response),content_type='application/json')
-
-        startDate=dt = datetime.strptime(str(startDate), "%Y-%m-%dT%H:%M:%S.%fZ")
-        endDate=dt = datetime.strptime(str(endDate), "%Y-%m-%dT%H:%M:%S.%fZ")
-        rows = None
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT work.name as work, St_folio.idFolio_id as folio, St_folio.idST_id as st, St_folio.date as date, St_folio.path_img as path from server_work as work, server_st_folio as St_folio")
-            rows = cursor.fetchall()
-        resp = []
-        for ix in rows:
-            b = json_serial(ix[3])
-            resp.append({"work":str(ix[0]), "folio":str(ix[1]),"st":str(ix[2]), "date":b, "path":str(ix[4])})
-        json_data = json.dumps(resp, default=json_serial)
-        return HttpResponse(json_data, content_type="application/json")
+        start = str(start)
+        end = str(end)
+        print "start -> ", start
+        print "end -> ", end
+        start = parse_datetime(start)
+        end = parse_datetime(end)
+        print "start -> ", start
+        print "end -> ", end
+        photos = None
+        try:
+            photos = St_work.objects.filter(idSTFolio__date__range=[start, end]).filter(idSTFolio__idPro__isnull=False)
+            print "photos in range [start, end]-> ", photos
+        except:
+            response = {
+             "message":"No exists data",
+             "status":400,
+            }
+            return HttpResponse(json.dumps(response),content_type='application/json')
+        try:
+            for ix in photos:
+                encoded_string = None
+                with open("./"+str(ix.idSTFolio.path_img), "rb") as image_file:
+                    encoded_string = b64encode(image_file.read())
+                    ix.idSTFolio.path_img = encoded_string
+        except:
+            response = {
+             "message":"Error with base64 code",
+             "status":400,
+            }
+            return HttpResponse(json.dumps(response),content_type='application/json')
+        data = []
+        for ix in photos:
+            data.append({"foto":ix.idSTFolio.path_img,
+                        "obra":ix.idObra.name,
+                        "st":ix.idSTFolio.idST.name,
+                        "folio":ix.idSTFolio.idFolio.name,
+                        "profesional":ix.idSTFolio.idPro.name})
+        response = {
+         "data":data,
+         "status":200,
+        }
+        return HttpResponse(json.dumps(response),content_type='application/json')
     else:
         response = {
             "message":"error",
