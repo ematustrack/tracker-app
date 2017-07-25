@@ -6,7 +6,7 @@ import { DataTable } from './data-table';
 
 @Injectable()
 export class DataTableService {
-  private Url = 'http://localhost:8000';  // URL to web api
+  private Url = 'https://f877e108.ngrok.io';  // URL to web api
   private headers = new Headers({ 'Content-Type': 'application/json' });
 
   constructor(private http: Http) { }
