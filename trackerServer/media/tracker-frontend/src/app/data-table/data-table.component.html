@@ -33,43 +33,53 @@
       </md-cell>
     </ng-container>
 
-    <!-- ID Column -->
-    <ng-container cdkColumnDef="userId">
+    <!-- Foto Column -->
+    <ng-container cdkColumnDef="foto">
       <md-header-cell *cdkHeaderCellDef md-sort-header>
-        ID
+        Foto
       </md-header-cell>
       <md-cell *cdkCellDef="let row">
-        {{row.id}}
+        <a (click)="gotoDetail(row.foto)">Fotografía Nº{{row.id}}</a>
       </md-cell>
     </ng-container>
 
-    <!-- Progress Column -->
-    <ng-container cdkColumnDef="progress">
+    <!-- Obra Column -->
+    <ng-container cdkColumnDef="obra">
       <md-header-cell *cdkHeaderCellDef md-sort-header>
-        Progress
+        Obra
       </md-header-cell>
       <md-cell *cdkCellDef="let row">
-        {{row.progress}}%
+        {{row.obra}}
       </md-cell>
     </ng-container>
 
-    <!-- Name Column -->
-    <ng-container cdkColumnDef="userName">
+    <!-- ST Column -->
+    <ng-container cdkColumnDef="st">
       <md-header-cell *cdkHeaderCellDef md-sort-header>
-        Name
+        ST
       </md-header-cell>
       <md-cell *cdkCellDef="let row">
-        {{row.name}}
+        {{row.st}}
       </md-cell>
     </ng-container>
 
-    <!-- Color Column -->
-    <ng-container cdkColumnDef="color">
+    <!-- Folio Column -->
+    <ng-container cdkColumnDef="folio">
       <md-header-cell *cdkHeaderCellDef md-sort-header>
-        Color
+        Folio
       </md-header-cell>
-      <md-cell *cdkCellDef="let row" [style.color]="row.color">
-        {{row.color}}
+      <md-cell *cdkCellDef="let row">
+        {{row.folio}}
+      </md-cell>
+    </ng-container>
+
+    <!-- Profesional Column -->
+    <ng-container cdkColumnDef="profesional">
+      <md-header-cell *cdkHeaderCellDef md-sort-header>
+        Profesional
+      </md-header-cell>
+      <md-cell *cdkCellDef="let row">
+        {{row.profesional}}
       </md-cell>
     </ng-container>
 

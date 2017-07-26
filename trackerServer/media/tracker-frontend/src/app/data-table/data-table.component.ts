@@ -1,4 +1,4 @@
-import {Component, ElementRef, ViewChild} from '@angular/core';
+import {Component, ElementRef, ViewChild, Input} from '@angular/core';
 import {DataSource} from '@angular/cdk';
 import {MdPaginator, MdSort, SelectionModel} from '@angular/material';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
@@ -24,25 +24,27 @@ import { Router }   from '@angular/router';
   templateUrl: 'data-table.component.html',
 })
 export class DataTableComponent {
-  displayedColumns = ['select', 'userId', 'userName', 'progress', 'color'];
-  exampleDatabase = new ExampleDatabase();
+  displayedColumns = ['select', 'foto', 'obra', 'st', 'folio', 'profesional'];
+  exampleDatabase: ExampleDatabase | null;
   selection = new SelectionModel<string>(true, []);
   dataSource: ExampleDataSource | null;
   photos: DataTable[];
-
+  @Input() start: string;
+  @Input() end: string;
   @ViewChild(MdPaginator) paginator: MdPaginator;
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild('filter') filter: ElementRef;
 
   constructor(
     private router: Router,
-    private datatableService: DataTableService) { }
-  getData(): void {
-    this.datatableService.getHero().then(photos => this.photos = photos);
+    private datatableService: DataTableService) {
   }
+
   ngOnInit() {
-    this.getData();
-    console.log(this.photos);
+    console.log("start -> ", this.start);
+    console.log("end -> ", this.end);
+    this.exampleDatabase = new ExampleDatabase(this.datatableService, this.start, this.end);
+    //this.getDataTable(this.start, this.end);
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
     Observable.fromEvent(this.filter.nativeElement, 'keyup')
       .debounceTime(150)
@@ -51,6 +53,10 @@ export class DataTableComponent {
         if (!this.dataSource) { return; }
         this.dataSource.filter = this.filter.nativeElement.value;
       });
+  }
+
+  gotoDetail(foto: string): void {
+    this.router.navigate(['/detail', foto]);
   }
 
   isAllSelected(): boolean {
@@ -70,57 +76,42 @@ export class DataTableComponent {
     if (this.isAllSelected()) {
       this.selection.clear();
     } else if (this.filter.nativeElement.value) {
-      this.dataSource.renderedData.forEach(data => this.selection.select(data.id));
+      this.dataSource.renderedData.forEach(data => this.selection.select(data.foto));
     } else {
-      this.exampleDatabase.data.forEach(data => this.selection.select(data.id));
+      this.exampleDatabase.data.forEach(data => this.selection.select(data.foto));
     }
   }
 }
 
-/** Constants used to fill up our data base. */
-const COLORS = ['maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple',
-  'fuchsia', 'lime', 'teal', 'aqua', 'blue', 'navy', 'black', 'gray'];
-const NAMES = ['Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack',
-  'Charlotte', 'Theodore', 'Isla', 'Oliver', 'Isabella', 'Jasper',
-  'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'];
-
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  color: string;
-}
 
 /** An example database that the data source uses to retrieve data for the table. */
 export class ExampleDatabase {
   /** Stream that emits whenever the data has been modified. */
-  dataChange: BehaviorSubject<UserData[]> = new BehaviorSubject<UserData[]>([]);
-  get data(): UserData[] { return this.dataChange.value; }
+  dataChange: BehaviorSubject<DataTable[]> = new BehaviorSubject<DataTable[]>([]);
+  get data(): DataTable[] { return this.dataChange.value; }
+  photos: DataTable[];
 
-  constructor() {
+  constructor(private datatableService: DataTableService, start: string, end: string) {
     // Fill up the database with 100 users.
-    for (let i = 0; i < 100; i++) { this.addUser(); }
+    //for (let i = 0; i < 100; i++) { this.addUser(); }
+    console.log("data in const ->", start, end);
+    this.getDataTable(start, end);
   }
 
-  /** Adds a new user to the database. */
-  addUser() {
-    const copiedData = this.data.slice();
-    copiedData.push(this.createNewUser());
-    this.dataChange.next(copiedData);
-  }
+  //getDataTable call dataTableService with two dates
+  getDataTable(start: string, end: string): void {
+    this.datatableService.getData(start, end).then(photos => {
+      //this.dataChange = photos;
+      for (let i = 0; i < photos.length; i++) {
+        const copiedData = this.data.slice();
+        photos[i].id = (i + 1).toString();
+        copiedData.push(photos[i]);
+        this.dataChange.next(copiedData);
+      }
 
-  /** Builds and returns a new User. */
-  private createNewUser() {
-    const name =
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))] + ' ' +
-      NAMES[Math.round(Math.random() * (NAMES.length - 1))].charAt(0) + '.';
+      //console.log("data -> ", this.dataChange);
+    })
 
-    return {
-      id: (this.data.length + 1).toString(),
-      name: name,
-      progress: Math.round(Math.random() * 100).toString(),
-      color: COLORS[Math.round(Math.random() * (COLORS.length - 1))]
-    };
   }
 }
 
@@ -136,8 +127,8 @@ export class ExampleDataSource extends DataSource<any> {
   get filter(): string { return this._filterChange.value; }
   set filter(filter: string) { this._filterChange.next(filter); }
 
-  filteredData: UserData[] = [];
-  renderedData: UserData[] = [];
+  filteredData: DataTable[] = [];
+  renderedData: DataTable[] = [];
 
   constructor(private _exampleDatabase: ExampleDatabase,
     private _paginator: MdPaginator,
@@ -146,7 +137,7 @@ export class ExampleDataSource extends DataSource<any> {
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
-  connect(): Observable<UserData[]> {
+  connect(): Observable<DataTable[]> {
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
       this._exampleDatabase.dataChange,
@@ -157,8 +148,8 @@ export class ExampleDataSource extends DataSource<any> {
 
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((item: UserData) => {
-        let searchStr = (item.name + item.color).toLowerCase();
+      this.filteredData = this._exampleDatabase.data.slice().filter((item: DataTable) => {
+        let searchStr = (item.obra + ' ' + item.st + ' ' + item.profesional).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) != -1;
       });
 
@@ -175,7 +166,7 @@ export class ExampleDataSource extends DataSource<any> {
   disconnect() { }
 
   /** Returns a sorted copy of the database data. */
-  sortData(data: UserData[]): UserData[] {
+  sortData(data: DataTable[]): DataTable[] {
     if (!this._sort.active || this._sort.direction == '') { return data; }
 
     return data.sort((a, b) => {
@@ -183,10 +174,11 @@ export class ExampleDataSource extends DataSource<any> {
       let propertyB: number | string = '';
 
       switch (this._sort.active) {
-        case 'userId': [propertyA, propertyB] = [a.id, b.id]; break;
-        case 'userName': [propertyA, propertyB] = [a.name, b.name]; break;
-        case 'progress': [propertyA, propertyB] = [a.progress, b.progress]; break;
-        case 'color': [propertyA, propertyB] = [a.color, b.color]; break;
+        case 'foto': [propertyA, propertyB] = [a.foto, b.foto]; break;
+        case 'obra': [propertyA, propertyB] = [a.obra, b.obra]; break;
+        case 'st': [propertyA, propertyB] = [a.st, b.st]; break;
+        case 'folio': [propertyA, propertyB] = [a.folio, b.folio]; break;
+        case 'profesional': [propertyA, propertyB] = [a.profesional, b.profesional]; break;
       }
 
       let valueA = isNaN(+propertyA) ? propertyA : +propertyA;

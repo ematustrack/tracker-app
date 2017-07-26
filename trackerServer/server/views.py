@@ -239,7 +239,6 @@ def get_aware_datetime(date_str):
 def dataTable(request):
     if request.method == "POST":
         print "[dataTable request] ", request
-        
         data = None
         try:
             body_unicode = request.body.decode('utf-8')
@@ -248,40 +247,30 @@ def dataTable(request):
             print "Error with json input"
             response = {
                 "message":"error",
-                "status":406,
             }
-            return HttpResponse(json.dumps(response), content_type='application/json')
-
+            return HttpResponse(json.dumps(response), content_type='application/json', status=406)
         start = None
         end = None
-
         try:
             start = data['start']
             end = data['end']
         except:
             response = {
              "message":"Error in params",
-             "status":406,
             }
-            return HttpResponse(json.dumps(response),content_type='application/json')
+            return HttpResponse(json.dumps(response),content_type='application/json',status=406)
         start = str(start)
         end = str(end)
-        print "start -> ", start
-        print "end -> ", end
         start = parse_datetime(start)
         end = parse_datetime(end)
-        print "start -> ", start
-        print "end -> ", end
         photos = None
         try:
             photos = St_work.objects.filter(idSTFolio__date__range=[start, end]).filter(idSTFolio__idPro__isnull=False)
-            print "photos in range [start, end]-> ", photos
         except:
             response = {
              "message":"No exists data",
-             "status":400,
-            }
-            return HttpResponse(json.dumps(response),content_type='application/json')
+             }
+            return HttpResponse(json.dumps(response),content_type='application/json',status=400)
         try:
             for ix in photos:
                 encoded_string = None
@@ -291,9 +280,8 @@ def dataTable(request):
         except:
             response = {
              "message":"Error with base64 code",
-             "status":400,
             }
-            return HttpResponse(json.dumps(response),content_type='application/json')
+            return HttpResponse(json.dumps(response),content_type='application/json',status=400)
         data = []
         for ix in photos:
             data.append({"foto":ix.idSTFolio.path_img,
@@ -303,12 +291,10 @@ def dataTable(request):
                         "profesional":ix.idSTFolio.idPro.name})
         response = {
          "data":data,
-         "status":200,
         }
-        return HttpResponse(json.dumps(response),content_type='application/json')
+        return HttpResponse(json.dumps(response),content_type='application/json',status=200)
     else:
         response = {
             "message":"error",
-            "status":404,
         }
-        return HttpResponse(json.dumps(response), content_type='application/json')
+        return HttpResponse(json.dumps(response), content_type='application/json',status=404)

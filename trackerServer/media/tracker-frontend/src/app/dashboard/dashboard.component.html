@@ -1,33 +1,35 @@
-<md-card>
-  <md-card-title>BUSCADOR DE IMÁGENES
-  </md-card-title>
-  <md-card-subtitle>FILTROS</md-card-subtitle >
-  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-    <md-card>
-      <div
-        class="container"
-        fxLayout
-        fxLayout.xs="column"
-        fxLayoutAlign="center"
-        fxLayoutGap="10px"
-        fxLayoutGap.xs="0">
-        <div class="item item-1" fxFlex="90%" fxFlexOrder="1">
-          <app-filter-time>Loading filter time...</app-filter-time>
+<div layout="row" layout-margin layout-wrap layout-align="center center">
+  <md-card flex="100" class="md-card-dashboard">
+    <md-card-title>BUSCADOR DE IMÁGENES
+    </md-card-title>
+    <md-card-subtitle>FILTROS</md-card-subtitle >
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+      <md-card>
+        <div
+          class="container"
+          fxLayout
+          fxLayout.xs="column"
+          fxLayoutAlign="center"
+          fxLayoutGap="10px"
+          fxLayoutGap.xs="0">
+          <div class="item item-1" fxFlex="90%" fxFlexOrder="1">
+            <app-filter-time>Loading filter time...</app-filter-time>
+          </div>
+          <div class="item item-2" fxFlex="10%" fxFlexOrder="2">
+            <button md-raised-button>Buscar</button>
+          </div>
         </div>
-        <div class="item item-2" fxFlex="10%" fxFlexOrder="2">
-          <button md-raised-button>Buscar</button>
-        </div>
-      </div>
-    </md-card>
-  </form>
+      </md-card>
+    </form>
 
-  <md-card-content>
-    <md-card style="background-color:rgba(176,224,230,0.2);">
-      <md-card-title>RESULTADOS</md-card-title>
-      <div *ngIf="active">
-        <app-data-table>Loading data-table...</app-data-table>
-      </div>
-
-    </md-card>
-  </md-card-content>
-</md-card>
+    <md-card-content>
+      <md-card *ngIf="active" style="background-color:rgba(176,224,230,0.2);">
+        <md-card-title>RESULTADOS</md-card-title>
+        <app-data-table start="2008-04-23T18:25:43.511Z" end="2019-04-23T18:25:43.511Z">
+          Loading data-table...
+        </app-data-table>
+      </md-card>
+    </md-card-content>
+    <md-card-footer style="text-align:center">© 2017</md-card-footer>
+  </md-card>
+</div>

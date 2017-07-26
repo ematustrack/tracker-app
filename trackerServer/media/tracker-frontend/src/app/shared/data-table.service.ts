@@ -1,25 +1,35 @@
 import { Injectable } from '@angular/core';
-import { Headers, RequestOptions, Http } from '@angular/http';
+import { Headers, RequestOptions, RequestMethod, Http } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import { DataTable } from './data-table';
 
 @Injectable()
 export class DataTableService {
-  private Url = 'https://f877e108.ngrok.io';  // URL to web api
+  private Url = 'http://127.0.0.1:8000';  // URL to web api
   private headers = new Headers({ 'Content-Type': 'application/json' });
-
   constructor(private http: Http) { }
 
-  getHero(): Promise<DataTable[]> {
-    const url = `${this.Url}/server/datatable/`;
-    const options = new RequestOptions({ headers: this.headers });
-
+  printRequest(url, headers, options): void {
     console.log("[url request] ", url);
     console.log("[headers] ", this.headers);
     console.log("[options] ", options);
+  }
+
+  getPhoto(id: string): string {
+    return id;
+  }
+
+  getData(start: string, end: string): Promise<DataTable[]> {
+    const url = `${this.Url}/server/datatable/`;
+
+    const options = new RequestOptions({
+      headers: this.headers,
+    });
+
+    const body = JSON.stringify({ start, end })
     return this.http
-      .post(url, JSON.stringify({ headers: this.headers }))
+      .post(url, body, options)
       .toPromise()
       .then(response => response.json().data as DataTable[])
       .catch(this.handleError);

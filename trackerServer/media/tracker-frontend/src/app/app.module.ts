@@ -20,6 +20,7 @@ import { FilterComponent } from './filter-time/filter/filter.component';
 import { DataTableComponent } from './data-table/data-table.component';
 
 import {DataTableService} from './shared/data-table.service';
+import { DataTableDetailComponent } from './data-table-detail/data-table-detail.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import {DataTableService} from './shared/data-table.service';
     FilterTimeComponent,
     FilterComponent,
     DataTableComponent,
+    DataTableDetailComponent,
   ],
   imports: [
     AppRoutingModule,
