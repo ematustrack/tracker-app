@@ -33,7 +33,10 @@ export class DataTableComponent {
   @Input() end: string;
   @ViewChild(MdPaginator) paginator: MdPaginator;
   @ViewChild(MdSort) sort: MdSort;
-  @ViewChild('filter') filter: ElementRef;
+  @ViewChild('filterObra') filterObra: ElementRef;
+  @ViewChild('filterST') filterST: ElementRef;
+  @ViewChild('filterFolio') filterFolio: ElementRef;
+  @ViewChild('filterProfesional') filterProfesional: ElementRef;
 
   constructor(
     private router: Router,
@@ -46,12 +49,12 @@ export class DataTableComponent {
     this.exampleDatabase = new ExampleDatabase(this.datatableService, this.start, this.end);
     //this.getDataTable(this.start, this.end);
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filter.nativeElement, 'keyup')
+    Observable.fromEvent(this.filterObra.nativeElement, 'keyup')
       .debounceTime(150)
       .distinctUntilChanged()
       .subscribe(() => {
         if (!this.dataSource) { return; }
-        this.dataSource.filter = this.filter.nativeElement.value;
+        this.dataSource.filterObra = this.filterObra.nativeElement.value;
       });
   }
 
@@ -63,7 +66,7 @@ export class DataTableComponent {
     if (!this.dataSource) { return false; }
     if (this.selection.isEmpty()) { return false; }
 
-    if (this.filter.nativeElement.value) {
+    if (this.filterObra.nativeElement.value) {
       return this.selection.selected.length == this.dataSource.renderedData.length;
     } else {
       return this.selection.selected.length == this.exampleDatabase.data.length;
@@ -75,7 +78,7 @@ export class DataTableComponent {
 
     if (this.isAllSelected()) {
       this.selection.clear();
-    } else if (this.filter.nativeElement.value) {
+    } else if (this.filterObra.nativeElement.value) {
       this.dataSource.renderedData.forEach(data => this.selection.select(data.foto));
     } else {
       this.exampleDatabase.data.forEach(data => this.selection.select(data.foto));
@@ -124,8 +127,8 @@ export class ExampleDatabase {
  */
 export class ExampleDataSource extends DataSource<any> {
   _filterChange = new BehaviorSubject('');
-  get filter(): string { return this._filterChange.value; }
-  set filter(filter: string) { this._filterChange.next(filter); }
+  get filterObra(): string { return this._filterChange.value; }
+  set filterObra(filterObra: string) { this._filterChange.next(filterObra); }
 
   filteredData: DataTable[] = [];
   renderedData: DataTable[] = [];
@@ -150,7 +153,7 @@ export class ExampleDataSource extends DataSource<any> {
       // Filter data
       this.filteredData = this._exampleDatabase.data.slice().filter((item: DataTable) => {
         let searchStr = (item.obra + ' ' + item.st + ' ' + item.profesional).toLowerCase();
-        return searchStr.indexOf(this.filter.toLowerCase()) != -1;
+        return searchStr.indexOf(this.filterObra.toLowerCase()) != -1;
       });
 
       // Sort filtered data

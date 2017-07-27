@@ -1,9 +1,48 @@
 <div class="example-container mat-elevation-z8">
-  <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
-    <md-input-container floatPlaceholder="never">
-      <input mdInput #filter placeholder="Filter users">
-    </md-input-container>
+  <div
+    class="container"
+    fxLayout
+    fxLayout.xs="column"
+    fxLayoutAlign="center"
+    fxLayoutGap="10px"
+    fxLayoutGap.xs="0">
+    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
+      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
+        <md-input-container floatPlaceholder="never">
+          <input mdInput #filterObra placeholder="Buscar Obra">
+        </md-input-container>
+      </div>
+    </div>
+    <div class="item item-2" fxFlex="20%" fxFlexOrder="1">
+      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
+        <md-input-container floatPlaceholder="never">
+          <input mdInput #filterST placeholder="Buscar Obra">
+        </md-input-container>
+      </div>
+    </div>
+    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
+      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
+        <md-input-container floatPlaceholder="never">
+          <input mdInput #filterFolio placeholder="Buscar Obra">
+        </md-input-container>
+      </div>
+    </div>
+    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
+      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
+        <md-input-container floatPlaceholder="never">
+          <input mdInput #filterObra placeholder="Buscar Obra">
+        </md-input-container>
+      </div>
+    </div>
+    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
+      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
+        <md-input-container floatPlaceholder="never">
+          <input mdInput #filterObra placeholder="Buscar Obra">
+        </md-input-container>
+      </div>
+    </div>
   </div>
+
   <div
     class="example-header example-selection-header"
     *ngIf="!selection.isEmpty()">
@@ -93,7 +132,7 @@
   <div
     class="example-no-results"
     [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
-    No users found matching filter.
+    No hay coincidencias con su búsqueda.
   </div>
 
   <md-paginator

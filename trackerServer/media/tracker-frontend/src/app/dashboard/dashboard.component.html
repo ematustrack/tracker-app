@@ -23,9 +23,9 @@
     </form>
 
     <md-card-content>
-      <md-card *ngIf="active" style="background-color:rgba(176,224,230,0.2);">
+      <md-card style="background-color:rgba(176,224,230,0.2);">
         <md-card-title>RESULTADOS</md-card-title>
-        <app-data-table start="2008-04-23T18:25:43.511Z" end="2019-04-23T18:25:43.511Z">
+        <app-data-table [start]=start [end]=end>
           Loading data-table...
         </app-data-table>
       </md-card>
