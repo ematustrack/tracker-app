@@ -831,7 +831,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var DataTableService = (function () {
     function DataTableService(http) {
         this.http = http;
-        this.Url = 'http://127.0.0.1:8000'; // URL to web api
+        this.Url = 'http://54.175.253.151'; // URL to web api
         this.headers = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["b" /* Headers */]({ 'Content-Type': 'application/json' });
     }
     DataTableService.prototype.printRequest = function (url, headers, options) {
@@ -844,6 +844,7 @@ var DataTableService = (function () {
     };
     DataTableService.prototype.getData = function (start, end) {
         var url = this.Url + "/server/datatable/";
+        console.log("url -> ", url);
         var options = new __WEBPACK_IMPORTED_MODULE_1__angular_http__["c" /* RequestOptions */]({
             headers: this.headers,
         });

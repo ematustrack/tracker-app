@@ -6,7 +6,7 @@ import { DataTable } from './data-table';
 
 @Injectable()
 export class DataTableService {
-  private Url = 'http://127.0.0.1:8000';  // URL to web api
+  private Url = 'http://54.175.253.151';  // URL to web api
   private headers = new Headers({ 'Content-Type': 'application/json' });
   constructor(private http: Http) { }
 
@@ -22,7 +22,7 @@ export class DataTableService {
 
   getData(start: string, end: string): Promise<DataTable[]> {
     const url = `${this.Url}/server/datatable/`;
-
+    console.log("url -> ", url);
     const options = new RequestOptions({
       headers: this.headers,
     });
