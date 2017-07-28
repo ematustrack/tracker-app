@@ -1,55 +1,16 @@
-<div class="example-container mat-elevation-z8">
-  <div
-    class="container"
-    fxLayout
-    fxLayout.xs="column"
-    fxLayoutAlign="center"
-    fxLayoutGap="10px"
-    fxLayoutGap.xs="0">
-    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
-      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
-        <md-input-container floatPlaceholder="never">
-          <input mdInput #filterObra placeholder="Buscar Obra">
-        </md-input-container>
-      </div>
-    </div>
-    <div class="item item-2" fxFlex="20%" fxFlexOrder="1">
-      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
-        <md-input-container floatPlaceholder="never">
-          <input mdInput #filterST placeholder="Buscar Obra">
-        </md-input-container>
-      </div>
-    </div>
-    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
-      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
-        <md-input-container floatPlaceholder="never">
-          <input mdInput #filterFolio placeholder="Buscar Obra">
-        </md-input-container>
-      </div>
-    </div>
-    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
-      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
-        <md-input-container floatPlaceholder="never">
-          <input mdInput #filterObra placeholder="Buscar Obra">
-        </md-input-container>
-      </div>
-    </div>
-    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
-      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
-        <md-input-container floatPlaceholder="never">
-          <input mdInput #filterObra placeholder="Buscar Obra">
-        </md-input-container>
-      </div>
-    </div>
-  </div>
+<div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
+  <div mdInput #filter></div>
 
-  <div
-    class="example-header example-selection-header"
-    *ngIf="!selection.isEmpty()">
-    {{selection.selected.length}}
-    {{selection.selected.length == 1 ? 'user' : 'users'}}
-    selected
-  </div>
+</div>
+<div
+  class="example-header example-selection-header"
+  *ngIf="!selection.isEmpty()">
+  {{selection.selected.length}}
+  {{selection.selected.length == 1 ? 'fotografía seleccionada' : 'fotografías
+  seleccionadas'}}
+</div>
+
+<div class="example-container mat-elevation-z8">
 
   <md-table #table [dataSource]="dataSource" mdSort>
 
@@ -119,6 +80,16 @@
       </md-header-cell>
       <md-cell *cdkCellDef="let row">
         {{row.profesional}}
+      </md-cell>
+    </ng-container>
+
+    <!-- Date Column -->
+    <ng-container cdkColumnDef="date">
+      <md-header-cell *cdkHeaderCellDef md-sort-header>
+        Fecha
+      </md-header-cell>
+      <md-cell *cdkCellDef="let row">
+        {{row.date}}
       </md-cell>
     </ng-container>
 

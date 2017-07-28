@@ -48,7 +48,6 @@ def insertData(request):
         date = None
         try:
             imgBase64 = data['FileName']
-            print "imgBase64 -> ", type(imgBase64)
             date = data['CreatedOn']
             st = data['ST_string']
             folio = data['Folio_string']
@@ -90,7 +89,6 @@ def insertData(request):
         #Insert image in route path
         try:
             with open(path, "wb") as fh:
-                print "path -> ", path
                 fh.write(imgBase64.decode('base64'))
         except:
             response = {
@@ -137,20 +135,14 @@ def getSTFolios(request):
                 "status":404,
             }
             return HttpResponse(json.dumps(response), content_type='application/json')
-        print "DCT -> ",dct
         json_data = json.dumps([dct], default=json_serial)
-        print "1"
         list_res = []
         for ix in dct:
             list_folios = []
             for iy in dct[ix]:
                 list_folios.append({"number":iy})
             list_res.append({"st":ix, "folios":list_folios})
-            print ix
-            print str(dct[ix][0])
-        print "2"
-        print "list_response ->", list_res
-        print "json_data -> ", json_data
+
         return HttpResponse(json.dumps(list_res), content_type="application/json")
     else:
         response = {
@@ -160,17 +152,35 @@ def getSTFolios(request):
         return HttpResponse(json.dumps(response), content_type='application/json')
 
 
-def getAllST(request):
+def dataFilter(request):
     print "REQUEST ----> ", request
     if request.method == "GET":
         rows = None
-        st_database = St_folio.objects.all()
-        print "st_database ", st_database
+        st_database = St_folio.objects.all().filter(path_img__isnull=False).filter(idFolio__isnull=False).filter(idST__isnull=False)
+        work_database = St_work.objects.all().filter(idSTFolio__isnull=False)
+
         st_ = st_database.values("idST").annotate(Count('idST'))
-        print "st_ ", st_
-        resp = []
+        folio_ = st_database.values("idFolio").annotate(Count('idFolio'))
+        obra_ = work_database.values("idObra").annotate(Count('idObra'))
+        profesional_ = st_database.values("idPro").annotate(Count('idPro'))
+
+        resp = {"data":[]}
+        st_list = {"st":[]}
+        folio_list = {"folio":[]}
+        obra_list = {"obra":[]}
+        profesional_list = {"profesional":[]}
         for ix in st_:
-            resp.append({"st":str(ix['idST'])})
+            st_list["st"].append(str(ix['idST']))
+        for ix in folio_:
+            folio_list["folio"].append(str(ix['idFolio']))
+        for ix in obra_:
+            obra_list["obra"].append(str(ix['idObra']))
+        for ix in profesional_:
+            profesional_list["profesional"].append(str(ix['idPro']))
+        resp["data"].append(st_list)
+        resp["data"].append(folio_list)
+        resp["data"].append(obra_list)
+        resp["data"].append(profesional_list)
         json_data = json.dumps(resp, default=json_serial)
         return HttpResponse(json_data, content_type="application/json")
     else:
@@ -179,6 +189,7 @@ def getAllST(request):
             "status":404,
         }
         return HttpResponse(json.dumps(response), content_type='application/json')
+
 
 def getFolioOfST(request):
     print "REQUEST ----> ", request
@@ -271,12 +282,13 @@ def dataTable(request):
              "message":"No exists data",
              }
             return HttpResponse(json.dumps(response),content_type='application/json',status=400)
+
         try:
             for ix in photos:
                 encoded_string = None
                 with open("./"+str(ix.idSTFolio.path_img), "rb") as image_file:
                     encoded_string = b64encode(image_file.read())
-                    ix.idSTFolio.path_img = encoded_string
+                    ix.path_img = encoded_string
         except:
             response = {
              "message":"Error with base64 code",
@@ -288,11 +300,12 @@ def dataTable(request):
                         "obra":ix.idObra.name,
                         "st":ix.idSTFolio.idST.name,
                         "folio":ix.idSTFolio.idFolio.name,
-                        "profesional":ix.idSTFolio.idPro.name})
+                        "profesional":ix.idSTFolio.idPro.name,
+                        "date":ix.idSTFolio.date})
         response = {
          "data":data,
         }
-        return HttpResponse(json.dumps(response),content_type='application/json',status=200)
+        return HttpResponse(json.dumps(response, default=json_serial),content_type='application/json',status=200)
     else:
         response = {
             "message":"error",

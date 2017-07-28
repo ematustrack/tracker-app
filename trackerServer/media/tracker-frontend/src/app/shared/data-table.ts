@@ -5,4 +5,5 @@ export class DataTable {
   st: string;
   folio: string;
   profesional: string;
+  date: Date;
 }

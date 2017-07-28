@@ -1,0 +1,53 @@
+<div
+  class="container"
+  fxLayout
+  fxLayout.xs="row"
+  fxLayoutAlign="center"
+  fxLayoutGap="20px"
+  fxLayoutGap.xs="0">
+  <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
+    <md-select placeholder="Obra" [(ngModel)]="selectedObra" name="obra">
+      <md-option *ngFor="let obra of obras" [value]="obra.value">
+        {{obra.value}}
+      </md-option>
+    </md-select>
+    <p>
+      {{selectedObra}}
+    </p>
+  </div>
+  <div class="item item-2" fxFlex="30%" fxFlexOrder="2">
+    <md-select placeholder="ST" [(ngModel)]="selectedST" name="st">
+      <md-option *ngFor="let st of sts" [value]="st.value">
+        {{st.value}}
+      </md-option>
+    </md-select>
+    <p>
+      {{selectedST}}
+    </p>
+  </div>
+  <div class="item item-3" fxFlex="30%" fxFlexOrder="3">
+    <md-select placeholder="Folio" [(ngModel)]="selectedFolio" name="folio">
+      <md-option *ngFor="let folio of folios" [value]="folio.value">
+        {{folio.value}}
+      </md-option>
+    </md-select>
+    <p>
+      {{selectedFolio}}
+    </p>
+  </div>
+  <div class="item item-4" fxFlex="30%" fxFlexOrder="4">
+    <md-select
+      placeholder="Profesional"
+      [(ngModel)]="selectedProfesional"
+      name="profesional">
+      <md-option
+        *ngFor="let profesional of profesionales"
+        [value]="profesional.value">
+        {{profesional.value}}
+      </md-option>
+    </md-select>
+    <p>
+      {{selectedProfesional}}
+    </p>
+  </div>
+</div>
