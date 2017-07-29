@@ -31,6 +31,10 @@ export class DataTableComponent {
   photos: DataTable[];
   @Input() start: string;
   @Input() end: string;
+  @Input() obra: string;
+  @Input() st: string;
+  @Input() folio: string;
+  @Input() profesional: string;
   @ViewChild(MdPaginator) paginator: MdPaginator;
   @ViewChild(MdSort) sort: MdSort;
   @ViewChild('filter') filter: ElementRef;
@@ -41,7 +45,7 @@ export class DataTableComponent {
   }
 
   ngOnInit() {
-    this.exampleDatabase = new ExampleDatabase(this.datatableService, this.start, this.end);
+    this.exampleDatabase = new ExampleDatabase(this.datatableService, this.start, this.end, this.obra, this.st, this.folio, this.profesional);
     //this.getDataTable(this.start, this.end);
     this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
 
@@ -84,13 +88,23 @@ export class ExampleDatabase {
   get data(): DataTable[] { return this.dataChange.value; }
   photos: DataTable[];
 
-  constructor(private datatableService: DataTableService, start: string, end: string) {
-    this.getDataTable(start, end);
+  constructor(private datatableService: DataTableService, start: string, end: string, obra: string, st: string, folio: string, profesional: string) {
+    if (!obra)
+      obra = "";
+    if (!st)
+      st = "";
+    if (!folio)
+      folio = "";
+    if (!profesional)
+      profesional = "";
+    console.log("[data-table, constructor] ", start, end, obra, st, folio, profesional);
+
+    this.getDataTable(start, end, obra, st, folio, profesional);
   }
 
   //getDataTable call dataTableService with two dates
-  getDataTable(start: string, end: string): void {
-    this.datatableService.getData(start, end).then(photos => {
+  getDataTable(start: string, end: string, obra: string, st: string, folio: string, profesional: string): void {
+    this.datatableService.getData(start, end, obra, st, folio, profesional).then(photos => {
       //this.dataChange = photos;
       for (let i = 0; i < photos.length; i++) {
         const copiedData = this.data.slice();

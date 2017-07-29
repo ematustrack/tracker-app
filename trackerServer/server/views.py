@@ -121,14 +121,15 @@ def getSTFolios(request):
         rows = None
         st_database = None
         try:
-            st_database = St_folio.objects.exclude(idST__isnull=True).exclude(idFolio__isnull=True).order_by('idST')
-            if (len(st_database) == 0):
+            st_ = St_work.objects.all().exclude(idSTFolio__idST__isnull=True).exclude(idSTFolio__idFolio__isnull=True).order_by('idSTFolio__idST')
+            if (len(st_) == 0):
                 response = {
                     "message":"error",
                     "status":404,
                 }
                 return HttpResponse(json.dumps(response), content_type='application/json', status=404)
-            dct = {k.name: [x.idFolio.name for x in g] for k, g in groupby(st_database, key=lambda q: q.idST)}
+            dct = {k.name: [x.idSTFolio.idFolio.name for x in g] for k, g in groupby(st_, key=lambda q: q.idSTFolio.idST)}
+
         except:
             response = {
                 "message":"error",
@@ -156,7 +157,7 @@ def dataFilter(request):
     print "REQUEST ----> ", request
     if request.method == "GET":
         rows = None
-        work_database = St_work.objects.all().filter(idSTFolio__path_img__isnull=False)
+        work_database = St_work.objects.all().filter(idSTFolio__path_img__isnull=False).filter(idSTFolio__idPro__isnull=False).filter(idSTFolio__idST__isnull=False).filter(idSTFolio__idFolio__isnull=False)
 
         st_=work_database.values("idSTFolio__idST").annotate(Count("idSTFolio__idST"))
         folio_ = work_database.values("idSTFolio__idFolio").annotate(Count("idSTFolio__idFolio"))
@@ -260,9 +261,18 @@ def dataTable(request):
             return HttpResponse(json.dumps(response), content_type='application/json', status=406)
         start = None
         end = None
+        obra = None
+        st = None
+        folio = None
+        profesional = None
+        print "[DATA-TABLE] ", data
         try:
             start = data['start']
             end = data['end']
+            obra = data['obra']
+            st = data['st']
+            folio = data['folio']
+            profesional = data['profesional']
         except:
             response = {
              "message":"Error in params",
@@ -270,11 +280,23 @@ def dataTable(request):
             return HttpResponse(json.dumps(response),content_type='application/json',status=406)
         start = str(start)
         end = str(end)
+        obra = str(obra)
+        st = str(st)
+        folio = str(folio)
+        profesional = str(profesional)
         start = parse_datetime(start)
         end = parse_datetime(end)
         photos = None
         try:
-            photos = St_work.objects.filter(idSTFolio__date__range=[start, end]).filter(idSTFolio__idPro__isnull=False)
+            photos = St_work.objects.filter(idSTFolio__date__range=[start, end]).filter(idSTFolio__idPro__isnull=False).filter(idSTFolio__idST__isnull=False).filter(idSTFolio__idFolio__isnull=False)
+            if obra != "":
+                photos=photos.filter(idObra__name=obra)
+            if st != "":
+                photos=photos.filter(idSTFolio__idST__name=st)
+            if folio != "":
+                photos=photos.filter(idSTFolio__idFolio__name=folio)
+            if profesional != "":
+                photos=photos.filter(idSTFolio__idPro__name=profesional)
         except:
             response = {
              "message":"No exists data",

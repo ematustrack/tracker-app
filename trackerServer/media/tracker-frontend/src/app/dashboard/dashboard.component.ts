@@ -72,27 +72,33 @@ export class DashboardComponent implements OnInit {
   selectedProfesional: string;
 
   onSubmit(f: NgForm) {
-    console.log(f.value);
-    if (f.value["init"] == null || f.value["init"] == "") {
+    if (!f.value["init"]) {
       alert("Ingrese la fecha de inicio.");
       return;
-    } else if (f.value["end"] == null || f.value["end"] == "") {
+    }
+    if (!f.value["end"]) {
       alert("Ingrese la fecha final.");
       return;
-    } else if (f.value["init"] > f.value["end"]) {
+    }
+    if (f.value["init"] > f.value["end"]) {
       alert("Las fechas no tienen coherencia.")
       return;
-    } else if (f.value["obra"] == null) {
+    }
+    if (f.value["obra"] == null) {
       console.log("Obra no seleccionada");
-    } else if (f.value["st"] == null) {
+    }
+    if (f.value["st"] == null) {
       console.log("ST no seleccionada");
-    } else if (f.value["folio"] == null) {
+    }
+    if (f.value["folio"] == null) {
       console.log("Folio no seleccionado");
-    } else if (f.value["profesional"] == null) {
+    }
+    if (f.value["profesional"] == null) {
       console.log("Profesional no seleccionado");
     }
+    this.defaultDateStart = this.localISOTime(f.value["init"]);
+    this.defaultDateEnd = this.localISOTime(f.value["end"]);
     this.active = true;
     console.log("Form values -> ", f.value);
-    alert('Hola');
   }
 }

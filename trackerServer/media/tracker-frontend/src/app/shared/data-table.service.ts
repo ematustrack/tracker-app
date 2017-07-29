@@ -20,14 +20,14 @@ export class DataTableService {
     return id;
   }
 
-  getData(start: string, end: string): Promise<DataTable[]> {
+  getData(start: string, end: string, obra: string, st: string, folio: string, profesional: string): Promise<DataTable[]> {
     const url = `${this.Url}/server/datatable/`;
     console.log("url -> ", url);
     const options = new RequestOptions({
       headers: this.headers,
     });
 
-    const body = JSON.stringify({ start, end })
+    const body = JSON.stringify({ start, end, obra, st, folio, profesional })
     return this.http
       .post(url, body, options)
       .toPromise()
