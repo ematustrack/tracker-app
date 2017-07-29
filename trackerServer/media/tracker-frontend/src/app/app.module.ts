@@ -50,6 +50,7 @@ import { SelectionComponent } from './filter-time/selection/selection.component'
     MdTableModule,
     MdCheckboxModule,
     MdPaginatorModule,
+    ReactiveFormsModule,
     MdDatepickerModule,
     MdNativeDateModule,
     BrowserAnimationsModule,

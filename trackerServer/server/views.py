@@ -156,27 +156,25 @@ def dataFilter(request):
     print "REQUEST ----> ", request
     if request.method == "GET":
         rows = None
-        st_database = St_folio.objects.all().filter(path_img__isnull=False).filter(idFolio__isnull=False).filter(idST__isnull=False)
-        work_database = St_work.objects.all().filter(idSTFolio__isnull=False)
+        work_database = St_work.objects.all().filter(idSTFolio__path_img__isnull=False)
 
-        st_ = st_database.values("idST").annotate(Count('idST'))
-        folio_ = st_database.values("idFolio").annotate(Count('idFolio'))
+        st_=work_database.values("idSTFolio__idST").annotate(Count("idSTFolio__idST"))
+        folio_ = work_database.values("idSTFolio__idFolio").annotate(Count("idSTFolio__idFolio"))
         obra_ = work_database.values("idObra").annotate(Count('idObra'))
-        profesional_ = st_database.values("idPro").annotate(Count('idPro'))
-
+        profesional_ = work_database.values("idSTFolio__idPro").annotate(Count("idSTFolio__idPro"))
         resp = {"data":[]}
         st_list = {"st":[]}
         folio_list = {"folio":[]}
         obra_list = {"obra":[]}
         profesional_list = {"profesional":[]}
         for ix in st_:
-            st_list["st"].append(str(ix['idST']))
+            st_list["st"].append(str(ix['idSTFolio__idST']))
         for ix in folio_:
-            folio_list["folio"].append(str(ix['idFolio']))
+            folio_list["folio"].append(str(ix['idSTFolio__idFolio']))
         for ix in obra_:
             obra_list["obra"].append(str(ix['idObra']))
         for ix in profesional_:
-            profesional_list["profesional"].append(str(ix['idPro']))
+            profesional_list["profesional"].append(str(ix['idSTFolio__idPro']))
         resp["data"].append(st_list)
         resp["data"].append(folio_list)
         resp["data"].append(obra_list)
@@ -288,7 +286,7 @@ def dataTable(request):
                 encoded_string = None
                 with open("./"+str(ix.idSTFolio.path_img), "rb") as image_file:
                     encoded_string = b64encode(image_file.read())
-                    ix.path_img = encoded_string
+                    ix.idSTFolio.path_img = encoded_string
         except:
             response = {
              "message":"Error with base64 code",

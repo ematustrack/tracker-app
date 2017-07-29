@@ -85,7 +85,6 @@ export class ExampleDatabase {
   photos: DataTable[];
 
   constructor(private datatableService: DataTableService, start: string, end: string) {
-    console.log("data in const ->", start, end);
     this.getDataTable(start, end);
   }
 
@@ -141,8 +140,7 @@ export class ExampleDataSource extends DataSource<any> {
     return Observable.merge(...displayDataChanges).map(() => {
       // Filter data
       this.filteredData = this._exampleDatabase.data.slice().filter((item: DataTable) => {
-        console.log("filter");
-        let searchStr = (item.obra + ' ' + item.st + ' ' + item.profesional).toLowerCase();
+        let searchStr = (item.obra).toLowerCase();
         return searchStr.indexOf(this.filter.toLowerCase()) != -1;
       });
 
