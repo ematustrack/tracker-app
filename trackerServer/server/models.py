@@ -39,7 +39,7 @@ class St_work(models.Model):
     class Meta:
         unique_together = (('idObra', 'idSTFolio'),)
     idObra = models.ForeignKey('Work', on_delete=models.CASCADE)
-    idSTFolio = models.ForeignKey('ST_folio', on_delete=models.CASCADE)
+    idSTFolio = models.OneToOneField('ST_folio', on_delete=models.CASCADE)
     def __str__(self):
         return self.idObra.name + "/st_folio" + str(self.idSTFolio.id)
 

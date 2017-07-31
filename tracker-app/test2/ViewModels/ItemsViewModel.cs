@@ -7,6 +7,7 @@ using Plugin.Media;
 using Xamarin.Forms;
 using System.Linq;
 using Plugin.Geolocator;
+using Acr.UserDialogs;
 
 namespace test2
 {
@@ -34,8 +35,10 @@ namespace test2
 			{
 				var _item = item as PicItem;
 				Items.Add(_item);
+                Items.OrderByDescending(x => x.CreatedOn);
                 await picService.AddItemAsync(_item);
 			});
+           
 		}
 
 		public async Task RemoveItemCommand(PicItem item)
@@ -51,7 +54,9 @@ namespace test2
 				//DisplayAlert("No Camera", ":( No camera avaialble.", "OK");
 
 			}
-           
+
+           UserDialogs.Instance.ShowLoading("Obteniendo posicion", MaskType.Black);
+
 			var locator = CrossGeolocator.Current;
 			locator.DesiredAccuracy = 25;
 			var position = new Plugin.Geolocator.Abstractions.Position();
@@ -64,10 +69,13 @@ namespace test2
 				{
 
 				}
+                UserDialogs.Instance.HideLoading();
 
 
 			}
-			catch (Exception ex) { }
+			catch (Exception ex) {
+                UserDialogs.Instance.HideLoading();
+            }
 
 
 			var fileName = System.DateTime.Now.Ticks.ToString();

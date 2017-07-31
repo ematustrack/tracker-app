@@ -13,7 +13,101 @@
           fxLayoutGap="10px"
           fxLayoutGap.xs="0">
           <div class="item item-1" fxFlex="90%" fxFlexOrder="1">
-            <app-filter-time>Loading filter time...</app-filter-time>
+            <div
+              class="container"
+              fxLayout
+              fxLayout.xs="row"
+              fxLayoutAlign="center"
+              fxLayoutGap="10px"
+              fxLayoutGap.xs="0">
+              <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
+                <md-input-container>
+                  <input
+                    mdInput
+                    [mdDatepicker]="pickerInit"
+                    placeholder="Fecha inicial"
+                    [min]="minDate"
+                    [max]="maxDate"
+                    [value]="10-2-2017"
+                    name="init"
+                    #init="ngModel"
+                    ngModel
+                    required>
+                  <button mdSuffix [mdDatepickerToggle]="pickerInit"></button>
+                </md-input-container>
+                <md-datepicker #pickerInit></md-datepicker>
+              </div>
+              <div class="item item-2" fxFlex="23%" fxFlexOrder="2">
+                <md-input-container>
+                  <input
+                    mdInput
+                    [mdDatepicker]="pickerEnd"
+                    placeholder="Fecha final"
+                    [min]="minDate"
+                    [max]="maxDate"
+                    name="end"
+                    ngModel
+                    required>
+                  <button mdSuffix [mdDatepickerToggle]="pickerEnd"></button>
+                </md-input-container>
+                <md-datepicker #pickerEnd></md-datepicker>
+              </div>
+              <div class="item item-3" fxFlex="62%" fxFlexOrder="3">
+                <div
+                  class="container"
+                  fxLayout
+                  fxLayout.xs="row"
+                  fxLayoutAlign="center"
+                  fxLayoutGap="20px"
+                  fxLayoutGap.xs="0">
+                  <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
+                    <md-select placeholder="Obra" [(ngModel)]="selectedObra" name="obra">
+                      <md-option *ngFor="let obra of obras" [value]="obra.value">
+                        {{obra.value}}
+                      </md-option>
+                    </md-select>
+                    <p>
+                      {{selectedObra}}
+                    </p>
+                  </div>
+                  <div class="item item-2" fxFlex="30%" fxFlexOrder="2">
+                    <md-select placeholder="ST" [(ngModel)]="selectedST" name="st">
+                      <md-option *ngFor="let st of sts" [value]="st.value">
+                        {{st.value}}
+                      </md-option>
+                    </md-select>
+                    <p>
+                      {{selectedST}}
+                    </p>
+                  </div>
+                  <div class="item item-3" fxFlex="30%" fxFlexOrder="3">
+                    <md-select placeholder="Folio" [(ngModel)]="selectedFolio" name="folio">
+                      <md-option *ngFor="let folio of folios" [value]="folio.value">
+                        {{folio.value}}
+                      </md-option>
+                    </md-select>
+                    <p>
+                      {{selectedFolio}}
+                    </p>
+                  </div>
+                  <div class="item item-4" fxFlex="30%" fxFlexOrder="4">
+                    <md-select
+                      placeholder="Profesional"
+                      [(ngModel)]="selectedProfesional"
+                      name="profesional">
+                      <md-option
+                        *ngFor="let profesional of profesionales"
+                        [value]="profesional.value">
+                        {{profesional.value}}
+                      </md-option>
+                    </md-select>
+                    <p>
+                      {{selectedProfesional}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="item item-2" fxFlex="10%" fxFlexOrder="2">
             <button md-raised-button>Buscar</button>
@@ -25,9 +119,25 @@
     <md-card-content>
       <md-card style="background-color:rgba(176,224,230,0.2);">
         <md-card-title>RESULTADOS</md-card-title>
-        <app-data-table [start]=start [end]=end>
+        <app-data-table *ngIf=!active [start]=defaultDateStart [end]=defaultDateEnd>
           Loading data-table...
         </app-data-table>
+        <app-data-table
+          *ngIf=active
+          [start]=defaultDateStart
+          [end]=defaultDateEnd
+          [obra]=selectedObra
+          [st]=selectedST
+          [folio]=selectedFolio
+          [profesional]=selectedProfesional>
+          Loading data-table...
+        </app-data-table>
+        {{defaultDateStart}}
+        {{defaultDateEnd}}
+        {{obra}}
+        {{st}}
+        {{folio}}
+        {{profesional}}
       </md-card>
     </md-card-content>
     <md-card-footer style="text-align:center">© 2017</md-card-footer>

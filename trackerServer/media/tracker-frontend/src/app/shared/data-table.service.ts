@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Headers, RequestOptions, RequestMethod, Http } from '@angular/http';
+import { Headers, RequestOptions, RequestMethod, Http, Response } from '@angular/http';
+import {Observable} from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/observable/merge';
 
-import 'rxjs/add/operator/toPromise';
 import { DataTable } from './data-table';
 
 @Injectable()
@@ -20,20 +23,19 @@ export class DataTableService {
     return id;
   }
 
-  getData(start: string, end: string): Promise<DataTable[]> {
+  getData(start: string, end: string, obra: string, st: string, folio: string, profesional: string): Observable<Response> {
     const url = `${this.Url}/server/datatable/`;
     console.log("url -> ", url);
     const options = new RequestOptions({
       headers: this.headers,
     });
 
-    const body = JSON.stringify({ start, end })
-    return this.http
-      .post(url, body, options)
-      .toPromise()
-      .then(response => response.json().data as DataTable[])
-      .catch(this.handleError);
+    const body = JSON.stringify({ start, end, obra, st, folio, profesional });
+    return this.http.post(url, body, options);
+
   }
+
+
   private handleError(error: any): Promise<any> {
     console.error('An error occurred', error); // for demo purposes only
     return Promise.reject(error.message || error);

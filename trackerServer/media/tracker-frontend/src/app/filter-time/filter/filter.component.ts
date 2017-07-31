@@ -8,6 +8,7 @@ import { DateAdapter } from '@angular/material';
 export class FilterComponent implements OnInit {
   @Input() type_d: string;
   @Input() date: string;
+  @Input() value: string;
   minDate = new Date(2017, 0, 1);
   maxDate = new Date(Date.now());
   constructor(private dateAdapter: DateAdapter<Date>) {

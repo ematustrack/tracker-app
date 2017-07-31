@@ -11,6 +11,7 @@ using SQLite.Net;
 
 using System.Diagnostics.Contracts;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 
 namespace test2.Droid
 {
@@ -34,7 +35,7 @@ namespace test2.Droid
             //connection.DropTable<PicItem>();
             connection.CreateTable<PicItem>();
 
-
+            UserDialogs.Init(this);
             //var result = TableExistsAsync<PicItem>(connection);
 			LoadApplication(new App(connection));
 		}

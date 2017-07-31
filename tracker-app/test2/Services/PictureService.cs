@@ -59,7 +59,7 @@ namespace test2
 		{
             var result = sql.Table<PicItem>();
 
-            return (IEnumerable<test2.PicItem>)await Task.FromResult(sql.Table<PicItem>());
+            return (IEnumerable<test2.PicItem>)await Task.FromResult(sql.Table<PicItem>().OrderByDescending(x => x.CreatedOn));
 		}
 
 		public Task<PicItem> UpdateItemAsync(string st, string folio, string note, PicItem item)

@@ -1,144 +1,72 @@
 <div class="example-container mat-elevation-z8">
   <div
-    class="container"
-    fxLayout
-    fxLayout.xs="column"
-    fxLayoutAlign="center"
-    fxLayoutGap="10px"
-    fxLayoutGap.xs="0">
-    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
-      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
-        <md-input-container floatPlaceholder="never">
-          <input mdInput #filterObra placeholder="Buscar Obra">
-        </md-input-container>
-      </div>
-    </div>
-    <div class="item item-2" fxFlex="20%" fxFlexOrder="1">
-      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
-        <md-input-container floatPlaceholder="never">
-          <input mdInput #filterST placeholder="Buscar Obra">
-        </md-input-container>
-      </div>
-    </div>
-    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
-      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
-        <md-input-container floatPlaceholder="never">
-          <input mdInput #filterFolio placeholder="Buscar Obra">
-        </md-input-container>
-      </div>
-    </div>
-    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
-      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
-        <md-input-container floatPlaceholder="never">
-          <input mdInput #filterObra placeholder="Buscar Obra">
-        </md-input-container>
-      </div>
-    </div>
-    <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
-      <div class="example-header" [style.display]="selection.isEmpty() ? '' : 'none'">
-        <md-input-container floatPlaceholder="never">
-          <input mdInput #filterObra placeholder="Buscar Obra">
-        </md-input-container>
-      </div>
+    class="example-loading-shade"
+    *ngIf="dataSource.isLoadingResults || dataSource.isRateLimitReached">
+    <md-spinner *ngIf="dataSource.isLoadingResults"></md-spinner>
+    <div class="example-rate-limit-reached" *ngIf="dataSource.isRateLimitReached">
+      Esperando por resultados...
     </div>
   </div>
 
-  <div
-    class="example-header example-selection-header"
-    *ngIf="!selection.isEmpty()">
-    {{selection.selected.length}}
-    {{selection.selected.length == 1 ? 'user' : 'users'}}
-    selected
-  </div>
-
-  <md-table #table [dataSource]="dataSource" mdSort>
+  <md-table
+    #table
+    [dataSource]="dataSource"
+    class="example-table"
+    mdSort
+    mdSortActive="date"
+    mdSortDisableClear
+    mdSortDirection="asc">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
 
-    <!-- Checkbox Column -->
-    <ng-container cdkColumnDef="select">
-      <md-header-cell *cdkHeaderCellDef>
-        <md-checkbox
-          (change)="$event ? masterToggle() : null"
-          [checked]="isAllSelected()"
-          [indeterminate]="selection.hasValue() && !isAllSelected()"></md-checkbox>
-      </md-header-cell>
-      <md-cell *cdkCellDef="let row">
-        <md-checkbox
-          (click)="$event.stopPropagation()"
-          (change)="$event ? selection.toggle(row.id) : null"
-          [checked]="selection.isSelected(row.id)"></md-checkbox>
-      </md-cell>
-    </ng-container>
-
-    <!-- Foto Column -->
+    <!-- Number Column -->
     <ng-container cdkColumnDef="foto">
-      <md-header-cell *cdkHeaderCellDef md-sort-header>
-        Foto
-      </md-header-cell>
+      <md-header-cell *cdkHeaderCellDef>Foto</md-header-cell>
       <md-cell *cdkCellDef="let row">
-        <a (click)="gotoDetail(row.foto)">Fotografía Nº{{row.id}}</a>
+        <a (click)="gotoDetail(row.foto, row.lat, row.lng)">Fotografía(click aquí)</a>
       </md-cell>
     </ng-container>
 
-    <!-- Obra Column -->
+    <!-- Title Column -->
     <ng-container cdkColumnDef="obra">
-      <md-header-cell *cdkHeaderCellDef md-sort-header>
-        Obra
-      </md-header-cell>
-      <md-cell *cdkCellDef="let row">
-        {{row.obra}}
-      </md-cell>
+      <md-header-cell *cdkHeaderCellDef>Obra</md-header-cell>
+      <md-cell *cdkCellDef="let row">{{ row.obra }}</md-cell>
     </ng-container>
 
-    <!-- ST Column -->
+    <!-- State Column -->
     <ng-container cdkColumnDef="st">
-      <md-header-cell *cdkHeaderCellDef md-sort-header>
-        ST
-      </md-header-cell>
-      <md-cell *cdkCellDef="let row">
-        {{row.st}}
-      </md-cell>
+      <md-header-cell *cdkHeaderCellDef>ST</md-header-cell>
+      <md-cell *cdkCellDef="let row">{{ row.st }}</md-cell>
     </ng-container>
 
-    <!-- Folio Column -->
+    <!-- State Column -->
     <ng-container cdkColumnDef="folio">
-      <md-header-cell *cdkHeaderCellDef md-sort-header>
-        Folio
-      </md-header-cell>
-      <md-cell *cdkCellDef="let row">
-        {{row.folio}}
-      </md-cell>
+      <md-header-cell *cdkHeaderCellDef>Folio</md-header-cell>
+      <md-cell *cdkCellDef="let row">{{ row.folio }}</md-cell>
     </ng-container>
 
-    <!-- Profesional Column -->
+    <!-- State Column -->
     <ng-container cdkColumnDef="profesional">
-      <md-header-cell *cdkHeaderCellDef md-sort-header>
-        Profesional
+      <md-header-cell *cdkHeaderCellDef>Porfesional</md-header-cell>
+      <md-cell *cdkCellDef="let row">{{ row.profesional }}</md-cell>
+    </ng-container>
+
+    <!-- Created Column -->
+    <ng-container cdkColumnDef="date">
+      <md-header-cell *cdkHeaderCellDef md-sort-header disableClear="true">
+        Fecha
       </md-header-cell>
-      <md-cell *cdkCellDef="let row">
-        {{row.profesional}}
-      </md-cell>
+      <md-cell *cdkCellDef="let row">{{row.date}}</md-cell>
     </ng-container>
 
     <md-header-row *cdkHeaderRowDef="displayedColumns"></md-header-row>
-    <md-row
-      *cdkRowDef="let row; columns: displayedColumns;"
-      [class.example-selected-row]="selection.isSelected(row.id)"
-      (click)="selection.toggle(row.id)"></md-row>
+    <md-row *cdkRowDef="let row; columns: displayedColumns;"></md-row>
   </md-table>
 
-  <div
-    class="example-no-results"
-    [style.display]="dataSource.renderedData.length == 0 ? '' : 'none'">
-    No hay coincidencias con su búsqueda.
-  </div>
-
   <md-paginator
-    #paginator
-    [length]="dataSource.filteredData.length"
+    [length]="dataSource.resultsLength"
     [pageIndex]="0"
     [pageSize]="25"
-    [pageSizeOptions]="[5, 10, 25, 100]"></md-paginator>
+    [pageSizeOptions]="[5, 10, 25, 50, 100]"></md-paginator>
 </div>

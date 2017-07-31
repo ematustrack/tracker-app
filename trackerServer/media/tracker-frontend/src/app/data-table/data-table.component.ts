@@ -1,17 +1,20 @@
-import {Component, ElementRef, ViewChild, Input} from '@angular/core';
-import {DataSource} from '@angular/cdk';
-import {MdPaginator, MdSort, SelectionModel} from '@angular/material';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Component, ViewChild, Input, OnInit, ElementRef, ChangeDetectorRef, AfterViewInit} from '@angular/core';
+import {DataSource} from '@angular/cdk/table';
+import {MdPaginator, MdSort} from '@angular/material';
 import {Observable} from 'rxjs/Observable';
-import 'rxjs/add/operator/startWith';
+import {Http, Response} from '@angular/http';
+import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/merge';
+import 'rxjs/add/observable/of';
 import 'rxjs/add/observable/fromEvent';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/debounceTime';
 
 import { DataTableService } from '../shared/data-table.service';
-import { DataTable } from '../shared/data-table';
+import { DataTable, DataInTable } from '../shared/data-table';
 import { Router }   from '@angular/router';
 
 
@@ -23,99 +26,66 @@ import { Router }   from '@angular/router';
   styleUrls: ['data-table.component.css'],
   templateUrl: 'data-table.component.html',
 })
-export class DataTableComponent {
-  displayedColumns = ['select', 'foto', 'obra', 'st', 'folio', 'profesional'];
+export class DataTableComponent implements OnInit, AfterViewInit {
+  displayedColumns = ['foto', 'obra', 'st', 'folio', 'profesional', 'date'];
   exampleDatabase: ExampleDatabase | null;
-  selection = new SelectionModel<string>(true, []);
   dataSource: ExampleDataSource | null;
-  photos: DataTable[];
+
   @Input() start: string;
   @Input() end: string;
+  @Input() obra: string;
+  @Input() st: string;
+  @Input() folio: string;
+  @Input() profesional: string;
+
   @ViewChild(MdPaginator) paginator: MdPaginator;
   @ViewChild(MdSort) sort: MdSort;
-  @ViewChild('filterObra') filterObra: ElementRef;
-  @ViewChild('filterST') filterST: ElementRef;
-  @ViewChild('filterFolio') filterFolio: ElementRef;
-  @ViewChild('filterProfesional') filterProfesional: ElementRef;
 
   constructor(
     private router: Router,
-    private datatableService: DataTableService) {
+    private datatableService: DataTableService,
+    private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    console.log("start -> ", this.start);
-    console.log("end -> ", this.end);
-    this.exampleDatabase = new ExampleDatabase(this.datatableService, this.start, this.end);
+    this.exampleDatabase = new ExampleDatabase(this.datatableService);
     //this.getDataTable(this.start, this.end);
-    this.dataSource = new ExampleDataSource(this.exampleDatabase, this.paginator, this.sort);
-    Observable.fromEvent(this.filterObra.nativeElement, 'keyup')
-      .debounceTime(150)
-      .distinctUntilChanged()
-      .subscribe(() => {
-        if (!this.dataSource) { return; }
-        this.dataSource.filterObra = this.filterObra.nativeElement.value;
-      });
+    this.dataSource = new ExampleDataSource(this.exampleDatabase!, this.paginator, this.sort, this.start, this.end, this.obra, this.st, this.folio, this.profesional);
+
   }
 
-  gotoDetail(foto: string): void {
-    this.router.navigate(['/detail', foto]);
+  ngAfterViewInit() {
+    console.log("calling ngAfterViewInit")
+    //console.log("f -> ", this.f);
+    // TODO: Remove this as it is a workaround to make the table visible when the page got reloaded
+    //var eventObservable = Observable.fromEvent(
+    //  this.f.nativeElement, 'keyup');
+    //console.log(eventObservable);
   }
 
-  isAllSelected(): boolean {
-    if (!this.dataSource) { return false; }
-    if (this.selection.isEmpty()) { return false; }
-
-    if (this.filterObra.nativeElement.value) {
-      return this.selection.selected.length == this.dataSource.renderedData.length;
-    } else {
-      return this.selection.selected.length == this.exampleDatabase.data.length;
-    }
-  }
-
-  masterToggle() {
-    if (!this.dataSource) { return; }
-
-    if (this.isAllSelected()) {
-      this.selection.clear();
-    } else if (this.filterObra.nativeElement.value) {
-      this.dataSource.renderedData.forEach(data => this.selection.select(data.foto));
-    } else {
-      this.exampleDatabase.data.forEach(data => this.selection.select(data.foto));
-    }
+  gotoDetail(foto: string, lat: number, lng: number): void {
+    this.router.navigate(['/detail', foto, lat, lng]);
   }
 }
 
 
 /** An example database that the data source uses to retrieve data for the table. */
 export class ExampleDatabase {
-  /** Stream that emits whenever the data has been modified. */
-  dataChange: BehaviorSubject<DataTable[]> = new BehaviorSubject<DataTable[]>([]);
-  get data(): DataTable[] { return this.dataChange.value; }
-  photos: DataTable[];
-
-  constructor(private datatableService: DataTableService, start: string, end: string) {
-    // Fill up the database with 100 users.
-    //for (let i = 0; i < 100; i++) { this.addUser(); }
-    console.log("data in const ->", start, end);
-    this.getDataTable(start, end);
-  }
-
   //getDataTable call dataTableService with two dates
-  getDataTable(start: string, end: string): void {
-    this.datatableService.getData(start, end).then(photos => {
-      //this.dataChange = photos;
-      for (let i = 0; i < photos.length; i++) {
-        const copiedData = this.data.slice();
-        photos[i].id = (i + 1).toString();
-        copiedData.push(photos[i]);
-        this.dataChange.next(copiedData);
-      }
-
-      //console.log("data -> ", this.dataChange);
-    })
-
+  getDataTable(start: string, end: string, obra: string, st: string, folio: string, profesional: string): Observable<DataInTable> {
+    if (!obra)
+      obra = "";
+    if (!st)
+      st = "";
+    if (!folio)
+      folio = "";
+    if (!profesional)
+      profesional = "";
+    return this.datatableService.getData(start, end, obra, st, folio, profesional)
+      .map(response => response.json() as DataInTable);
   }
+
+  constructor(private datatableService: DataTableService) { }
 }
 
 /**
@@ -125,69 +95,60 @@ export class ExampleDatabase {
  * the underlying data. Instead, it only needs to take the data and send the table exactly what
  * should be rendered.
  */
-export class ExampleDataSource extends DataSource<any> {
-  _filterChange = new BehaviorSubject('');
-  get filterObra(): string { return this._filterChange.value; }
-  set filterObra(filterObra: string) { this._filterChange.next(filterObra); }
-
-  filteredData: DataTable[] = [];
-  renderedData: DataTable[] = [];
+export class ExampleDataSource extends DataSource<DataTable> {
+  resultsLength = 0;
+  isLoadingResults: boolean;
+  isRateLimitReached: boolean;
 
   constructor(private _exampleDatabase: ExampleDatabase,
     private _paginator: MdPaginator,
-    private _sort: MdSort) {
+    private _sort: MdSort,
+    private start: string,
+    private end: string,
+    private obra: string,
+    private st: string,
+    private folio: string,
+    private profesional: string) {
     super();
   }
 
   /** Connect function called by the table to retrieve one stream containing the data to render. */
   connect(): Observable<DataTable[]> {
+    console.log("[CONNECT METHOD]");
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
-      this._exampleDatabase.dataChange,
       this._sort.mdSortChange,
-      this._filterChange,
-      this._paginator.page,
+      this._paginator.page
     ];
 
-    return Observable.merge(...displayDataChanges).map(() => {
-      // Filter data
-      this.filteredData = this._exampleDatabase.data.slice().filter((item: DataTable) => {
-        let searchStr = (item.obra + ' ' + item.st + ' ' + item.profesional).toLowerCase();
-        return searchStr.indexOf(this.filterObra.toLowerCase()) != -1;
+    this._sort.mdSortChange.subscribe(() => this._paginator.pageIndex = 0);
+
+    return Observable.merge(...displayDataChanges)
+
+      .startWith(null)
+      .switchMap(() => {
+        this.isLoadingResults = true;
+        return this._exampleDatabase.getDataTable(
+          this.start, this.end, this.obra, this.st, this.folio, this.profesional);
+      })
+      .map(data => {
+        // Flip flag to show that loading has finished.
+        this.isLoadingResults = false;
+        this.isRateLimitReached = false;
+        //console.log("length -> ", (data.items).length);
+        this.resultsLength = data["data"].length;
+        //console.log("DATA ITEMS -> ", data["data"].length);
+        return data["data"];
+      })
+      .catch(() => {
+        this.isLoadingResults = false;
+        // Catch if the GitHub API has reached its rate limit. Return empty data.
+        this.isRateLimitReached = true;
+        return Observable.of(null);
       });
-
-      // Sort filtered data
-      const sortedData = this.sortData(this.filteredData.slice());
-
-      // Grab the page's slice of the filtered sorted data.
-      const startIndex = this._paginator.pageIndex * this._paginator.pageSize;
-      this.renderedData = sortedData.splice(startIndex, this._paginator.pageSize);
-      return this.renderedData;
-    });
   }
 
   disconnect() { }
 
-  /** Returns a sorted copy of the database data. */
-  sortData(data: DataTable[]): DataTable[] {
-    if (!this._sort.active || this._sort.direction == '') { return data; }
 
-    return data.sort((a, b) => {
-      let propertyA: number | string = '';
-      let propertyB: number | string = '';
-
-      switch (this._sort.active) {
-        case 'foto': [propertyA, propertyB] = [a.foto, b.foto]; break;
-        case 'obra': [propertyA, propertyB] = [a.obra, b.obra]; break;
-        case 'st': [propertyA, propertyB] = [a.st, b.st]; break;
-        case 'folio': [propertyA, propertyB] = [a.folio, b.folio]; break;
-        case 'profesional': [propertyA, propertyB] = [a.profesional, b.profesional]; break;
-      }
-
-      let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
-      let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
-
-      return (valueA < valueB ? -1 : 1) * (this._sort.direction == 'asc' ? 1 : -1);
-    });
-  }
 }
