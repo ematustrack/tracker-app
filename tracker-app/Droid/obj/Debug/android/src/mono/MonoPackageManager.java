@@ -99,6 +99,10 @@ class MonoPackageManager_Resources {
 	public static final String[] Assemblies = new String[]{
 		/* We need to ensure that "test2.Droid.dll" comes first in this list. */
 		"test2.Droid.dll",
+		"Acr.Support.Android.dll",
+		"Acr.UserDialogs.dll",
+		"Acr.UserDialogs.Interface.dll",
+		"AndHUD.dll",
 		"DotNetCross.Memory.Unsafe.dll",
 		"FormsViewGroup.dll",
 		"Newtonsoft.Json.dll",
@@ -116,6 +120,7 @@ class MonoPackageManager_Resources {
 		"Plugin.SQLiteConnection.Abstractions.dll",
 		"Plugin.SQLiteConnection.dll",
 		"Remotion.Linq.dll",
+		"Splat.dll",
 		"SQLite-net.dll",
 		"SQLite.Net.Async.dll",
 		"SQLite.Net.dll",
