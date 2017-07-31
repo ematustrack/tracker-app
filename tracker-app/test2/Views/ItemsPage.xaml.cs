@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 using Plugin.Media;
 using Xamarin.Forms;
 
@@ -17,6 +18,8 @@ namespace test2
 
 			BindingContext = this.viewModel = new ItemsViewModel(picService);
             p = picService;
+
+
 
 		}
 

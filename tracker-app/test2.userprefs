@@ -1,11 +1,37 @@
 ﻿<Properties StartupConfiguration="{659B1D8B-9E27-4038-B886-3721E8A3DBCF}|Default">
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="test2/Views/ItemsPage.xaml.cs">
+    <Files>
+      <File FileName="test2/ViewModels/ItemsViewModel.cs" Line="58" Column="12" />
+      <File FileName="test2/Services/PictureService.cs" Line="53" Column="47" />
+      <File FileName="Droid/GlobalSuppressions.cs" Line="1" Column="1" />
+      <File FileName="Droid/MainActivity.cs" Line="43" Column="8" />
+      <File FileName="test2/Views/ItemsPage.xaml.cs" Line="1" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="test2" expanded="True">
+            <Node name="test2" expanded="True">
+              <Node name="Services" expanded="True" />
+              <Node name="ViewModels" expanded="True" />
+              <Node name="Views" expanded="True">
+                <Node name="ItemsPage.xaml.cs" selected="True" />
+              </Node>
+            </Node>
+            <Node name="test2.Droid" expanded="True">
+              <Node name="ComponentReferenceFolder" expanded="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint enabled="false" file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Views/ItemsPage.xaml.cs" relfile="test2/Views/ItemsPage.xaml.cs" line="30" column="1" />
-      <Breakpoint file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Views/ItemDetailPage.xaml.cs" relfile="test2/Views/ItemDetailPage.xaml.cs" line="116" column="1" />
-      <Breakpoint file="/Users/fabulias/Documents/Codes/tracker/tracker-app/test2/Views/ItemDetailPage.xaml.cs" relfile="test2/Views/ItemDetailPage.xaml.cs" line="134" column="127" />
+      <Breakpoint enabled="false" file="/Users/ematus/Projects/appgit/tracker-app/tracker-app/test2/Views/ItemsPage.xaml.cs" relfile="test2/Views/ItemsPage.xaml.cs" line="30" column="1" />
+      <Breakpoint file="/Users/ematus/Projects/appgit/tracker-app/tracker-app/test2/Views/ItemDetailPage.xaml.cs" relfile="test2/Views/ItemDetailPage.xaml.cs" line="116" column="1" />
+      <Breakpoint file="/Users/ematus/Projects/appgit/tracker-app/tracker-app/test2/Views/ItemDetailPage.xaml.cs" relfile="test2/Views/ItemDetailPage.xaml.cs" line="134" column="127" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>
