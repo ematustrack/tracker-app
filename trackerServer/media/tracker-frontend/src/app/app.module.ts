@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, ViewChild } from '@angular/core';
+import { NgModule, ViewChild, ApplicationRef } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 import { CdkTableModule } from '@angular/cdk/table';
 import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
@@ -13,7 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { MdToolbarModule, MdCardModule, MdDatepickerModule } from '@angular/material';
 import { MdInputModule, MdNativeDateModule, MdCheckboxModule} from '@angular/material';
 import { MdButtonModule, MdTableModule, MdSortModule, MdPaginatorModule } from '@angular/material';
-import {MdSelectModule} from '@angular/material';
+import {MdSelectModule, MdProgressSpinnerModule} from '@angular/material';
 
 
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -26,6 +27,10 @@ import {SelectionService} from './shared/selection.service';
 import { DataTableDetailComponent } from './data-table-detail/data-table-detail.component';
 import { SelectionComponent } from './filter-time/selection/selection.component';
 
+import { AgmCoreModule } from '@agm/core';
+import { MapComponent } from './map/map.component';
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -35,6 +40,7 @@ import { SelectionComponent } from './filter-time/selection/selection.component'
     DataTableComponent,
     DataTableDetailComponent,
     SelectionComponent,
+    MapComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -43,8 +49,10 @@ import { SelectionComponent } from './filter-time/selection/selection.component'
     MdCardModule,
     MdSelectModule,
     FormsModule,
+    CommonModule,
     HttpModule,
     MdInputModule,
+    MdProgressSpinnerModule,
     MdButtonModule,
     MdSortModule,
     MdTableModule,
@@ -57,6 +65,9 @@ import { SelectionComponent } from './filter-time/selection/selection.component'
     FlexLayoutModule,
     AppRoutingModule,
     CdkTableModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyB-5hOEDRCXoZkASuzZap7vQKgseipzlGo'
+    })
   ],
   providers: [DataTableService, SelectionService],
   bootstrap: [AppComponent]

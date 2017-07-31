@@ -6,7 +6,7 @@ import { DataTableDetailComponent } from './data-table-detail/data-table-detail.
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: 'home', component: DashboardComponent },
-  { path: 'detail/:id', component: DataTableDetailComponent }
+  { path: 'detail/:id/:lat/:lng', component: DataTableDetailComponent }
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

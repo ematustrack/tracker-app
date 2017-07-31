@@ -4,6 +4,7 @@ import { DateAdapter } from '@angular/material';
 import {MdSelectChange} from '@angular/material';
 import {SelectionService} from '../shared/selection.service';
 import {SelectionData} from '../shared/selection-data';
+import {ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,8 +15,8 @@ export class DashboardComponent implements OnInit {
   active: boolean;
   start: string;
   end: string;
-  defaultDateStart: Date;
-  defaultDateEnd: Date;
+  @Input() defaultDateStart: Date;
+  @Input() defaultDateEnd: Date;
   minDate = new Date(2000, 0, 1);
   maxDate = new Date(Date.now());
   selectionData: SelectionData;
@@ -24,12 +25,17 @@ export class DashboardComponent implements OnInit {
   folios: string[];
   profesionales: string[];
 
-  constructor(private dateAdapter: DateAdapter<Date>, private selectionService: SelectionService) {
+  constructor(
+    private dateAdapter: DateAdapter<Date>,
+    private selectionService: SelectionService,
+    private route: ActivatedRoute,
+    private r: Router) {
+
     dateAdapter.setLocale('nl'); //DD-MM-YYYY
-    this.active = false;
   }
 
   ngOnInit() {
+    this.active = false;
     let date = new Date(Date.now());
     let date_end = date;
     this.defaultDateEnd = date_end;
@@ -39,9 +45,20 @@ export class DashboardComponent implements OnInit {
     this.defaultDateEnd = this.localISOTime(this.defaultDateEnd);
     console.log("init ", this.defaultDateStart);
     console.log("end ", this.defaultDateEnd);
+    //console.log(this.route.snapshot.params["init"]);
+    /*this.route.params.subscribe(params => {
+      if (!this.deepEquals(params, {}))
+        this.assignData(params);
+    });*/
     this.getDataFilters();
-  }
 
+  }
+  assignData(params) {
+    console.log("assignData");
+    this.defaultDateStart = this.localISOTime(params["init"]);
+    this.defaultDateEnd = this.localISOTime(params["end"]);
+
+  }
   localISOTime(d): any {
     if (!d)
       d = new Date()
@@ -66,12 +83,13 @@ export class DashboardComponent implements OnInit {
     });
 
   }
-  selectedObra: string;
-  selectedST: string;
-  selectedFolio: string;
-  selectedProfesional: string;
+  @Input() selectedObra: string;
+  @Input() selectedST: string;
+  @Input() selectedFolio: string;
+  @Input() selectedProfesional: string;
 
   onSubmit(f: NgForm) {
+    this.active = false;
     if (!f.value["init"]) {
       alert("Ingrese la fecha de inicio.");
       return;
@@ -99,6 +117,43 @@ export class DashboardComponent implements OnInit {
     this.defaultDateStart = this.localISOTime(f.value["init"]);
     this.defaultDateEnd = this.localISOTime(f.value["end"]);
     this.active = true;
+    //this.r.navigate['/home'];
     console.log("Form values -> ", f.value);
+  }
+
+  deepEquals(x, y) {
+    if (x === y) {
+      return true; // if both x and y are null or undefined and exactly the same
+    } else if (!(x instanceof Object) || !(y instanceof Object)) {
+      return false; // if they are not strictly equal, they both need to be Objects
+    } else if (x.constructor !== y.constructor) {
+      // they must have the exact same prototype chain, the closest we can do is
+      // test their constructor.
+      return false;
+    } else {
+      for (const p in x) {
+        if (!x.hasOwnProperty(p)) {
+          continue; // other properties were tested using x.constructor === y.constructor
+        }
+        if (!y.hasOwnProperty(p)) {
+          return false; // allows to compare x[ p ] and y[ p ] when set to undefined
+        }
+        if (x[p] === y[p]) {
+          continue; // if they have the same strict value or identity then they are equal
+        }
+        if (typeof (x[p]) !== 'object') {
+          return false; // Numbers, Strings, Functions, Booleans must be strictly equal
+        }
+        if (!this.deepEquals(x[p], y[p])) {
+          return false;
+        }
+      }
+      for (const p in y) {
+        if (y.hasOwnProperty(p) && !x.hasOwnProperty(p)) {
+          return false;
+        }
+      }
+      return true;
+    }
   }
 }

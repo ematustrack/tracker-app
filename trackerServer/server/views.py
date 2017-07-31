@@ -265,7 +265,7 @@ def dataTable(request):
         st = None
         folio = None
         profesional = None
-        print "[DATA-TABLE] ", data
+        print "[DATA] -> ",data
         try:
             start = data['start']
             end = data['end']
@@ -321,7 +321,9 @@ def dataTable(request):
                         "st":ix.idSTFolio.idST.name,
                         "folio":ix.idSTFolio.idFolio.name,
                         "profesional":ix.idSTFolio.idPro.name,
-                        "date":ix.idSTFolio.date})
+                        "date":ix.idSTFolio.date,
+                        "lat":ix.idSTFolio.lat,
+                        "lng":ix.idSTFolio.lng})
         response = {
          "data":data,
         }
