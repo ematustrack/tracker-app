@@ -1,21 +1,6 @@
 <div class="example-container mat-elevation-z8">
-  <div
-    class="example-loading-shade"
-    *ngIf="dataSource.isLoadingResults || dataSource.isRateLimitReached">
-    <md-spinner *ngIf="dataSource.isLoadingResults"></md-spinner>
-    <div class="example-rate-limit-reached" *ngIf="dataSource.isRateLimitReached">
-      Esperando por resultados...
-    </div>
-  </div>
 
-  <md-table
-    #table
-    [dataSource]="dataSource"
-    class="example-table"
-    mdSort
-    mdSortActive="date"
-    mdSortDisableClear
-    mdSortDirection="asc">
+  <md-table #table [dataSource]="dataSource" class="example-table" mdSort>
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->

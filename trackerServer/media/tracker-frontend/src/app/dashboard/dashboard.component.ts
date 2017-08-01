@@ -114,6 +114,8 @@ export class DashboardComponent implements OnInit {
     if (f.value["profesional"] == null) {
       console.log("Profesional no seleccionado");
     }
+    f.value["end"].setDate(f.value["end"].getDate() + 1);
+    console.log(f.value["end"]);
     this.defaultDateStart = this.localISOTime(f.value["init"]);
     this.defaultDateEnd = this.localISOTime(f.value["end"]);
     this.active = true;
