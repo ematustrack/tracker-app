@@ -288,7 +288,7 @@ def dataTable(request):
         end = parse_datetime(end)
         photos = None
         try:
-            photos = St_work.objects.filter(idSTFolio__date__range=[start, end]).filter(idSTFolio__idPro__isnull=False).filter(idSTFolio__idST__isnull=False).filter(idSTFolio__idFolio__isnull=False)
+            photos = St_work.objects.filter(idSTFolio__date__range=[start, end]).filter(idSTFolio__idPro__isnull=False).filter(idSTFolio__idST__isnull=False).filter(idSTFolio__idFolio__isnull=False).order_by('-idSTFolio__date')
             if obra != "":
                 photos=photos.filter(idObra__name=obra)
             if st != "":
