@@ -7,7 +7,7 @@ import {SelectionData} from './selection-data';
 @Injectable()
 export class SelectionService {
 
-  private Url = 'http://54.175.253.151';  // URL to web api
+  private Url = 'http://127.0.0.1:8000';  // URL to web api
   constructor(private http: Http) { }
 
   getData(): Promise<SelectionData> {

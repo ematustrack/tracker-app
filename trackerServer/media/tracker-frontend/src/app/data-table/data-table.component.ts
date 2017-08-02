@@ -41,7 +41,6 @@ export class DataTableComponent implements OnChanges, AfterViewInit {
   @Input() profesional: string;
 
   @ViewChild(MdPaginator) paginator: MdPaginator;
-  @ViewChild(MdSort) sort: MdSort;
 
   constructor(
     private router: Router,
@@ -52,7 +51,7 @@ export class DataTableComponent implements OnChanges, AfterViewInit {
   ngOnChanges() {
     this.exampleDatabase = new ExampleDatabase(this.datatableService);
     //this.getDataTable(this.start, this.end);
-    this.dataSource = new ExampleDataSource(this.exampleDatabase!, this.paginator, this.sort, this.start, this.end, this.obra, this.st, this.folio, this.profesional);
+    this.dataSource = new ExampleDataSource(this.exampleDatabase!, this.paginator, this.start, this.end, this.obra, this.st, this.folio, this.profesional);
 
   }
 
@@ -76,12 +75,12 @@ export class ExampleDatabase {
   //getDataTable call dataTableService with two dates
   dataChange: BehaviorSubject<DataTable[]> = new BehaviorSubject<DataTable[]>([]);
   get data(): DataTable[] { return this.dataChange.value; }
-  addUser() {
-    const copiedData = this.data.slice();
-    copiedData.push();
-    this.dataChange.next(copiedData);
-  }
+
   getDataTable(start: string, end: string, obra: string, st: string, folio: string, profesional: string): Observable<DataInTable> {
+    if (!start)
+      start = "";
+    if (!end)
+      end = "";
     if (!obra)
       obra = "";
     if (!st)
@@ -114,7 +113,6 @@ export class ExampleDataSource extends DataSource<DataTable> {
 
   constructor(private _exampleDatabase: ExampleDatabase,
     private _paginator: MdPaginator,
-    private _sort: MdSort,
     private start: string,
     private end: string,
     private obra: string,
@@ -129,14 +127,13 @@ export class ExampleDataSource extends DataSource<DataTable> {
     console.log("[CONNECT METHOD]");
     // Listen for any changes in the base data, sorting, filtering, or pagination
     const displayDataChanges = [
-      this._paginator.page, this._sort.mdSortChange
+      this._paginator.page
     ];
 
     //this._sort.mdSortChange.subscribe(() => this._paginator.pageIndex = 0);
     return Observable.merge(...displayDataChanges)
       .startWith(null)
       .switchMap(() => {
-        console.log("sort => ", this._sort.mdSortChange);
         this.isLoadingResults = true;
         return this._exampleDatabase.getDataTable(
           this.start, this.end, this.obra, this.st, this.folio, this.profesional);
@@ -161,26 +158,5 @@ export class ExampleDataSource extends DataSource<DataTable> {
 
   disconnect() { }
 
-  getSortedData(): DataTable[] {
-    const data = this._exampleDatabase.data.slice();
-    if (!this._sort.active || this._sort.direction == '') { return data; }
 
-    return data.sort((a, b) => {
-      let propertyA: number | string | Date = '';
-      let propertyB: number | string | Date = '';
-
-      switch (this._sort.active) {
-        case 'foto': [propertyA, propertyB] = [a.foto, b.foto]; break;
-        case 'obra': [propertyA, propertyB] = [a.obra, b.obra]; break;
-        case 'st': [propertyA, propertyB] = [a.st, b.st]; break;
-        case 'folio': [propertyA, propertyB] = [a.folio, b.folio]; break;
-        case 'date': [propertyA, propertyB] = [a.date, b.date]; break;
-      }
-
-      let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
-      let valueB = isNaN(+propertyB) ? propertyB : +propertyB;
-
-      return (valueA < valueB ? -1 : 1) * (this._sort.direction == 'asc' ? 1 : -1);
-    });
-  }
 }

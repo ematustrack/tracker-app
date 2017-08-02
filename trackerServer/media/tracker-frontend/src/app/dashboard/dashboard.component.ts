@@ -13,8 +13,6 @@ import {ActivatedRoute, Router } from '@angular/router';
 })
 export class DashboardComponent implements OnInit {
   active: boolean;
-  start: string;
-  end: string;
   @Input() defaultDateStart: Date;
   @Input() defaultDateEnd: Date;
   minDate = new Date(2000, 0, 1);
@@ -30,11 +28,7 @@ export class DashboardComponent implements OnInit {
     private selectionService: SelectionService,
     private route: ActivatedRoute,
     private r: Router) {
-
     dateAdapter.setLocale('nl'); //DD-MM-YYYY
-  }
-
-  ngOnInit() {
     this.active = false;
     let date = new Date(Date.now());
     let date_end = date;
@@ -50,6 +44,10 @@ export class DashboardComponent implements OnInit {
       if (!this.deepEquals(params, {}))
         this.assignData(params);
     });*/
+  }
+
+  ngOnInit() {
+
     this.getDataFilters();
 
   }
@@ -68,8 +66,9 @@ export class DashboardComponent implements OnInit {
 
   setData(array: string[]): any[] {
     let objetos = new Array<any>();
+    objetos.push({ value: "", viewSelect: "Todas" });
     for (var ix of array) {
-      objetos.push({ value: ix });
+      objetos.push({ value: ix, viewSelect: ix });
     }
     return objetos;
   }
@@ -88,17 +87,32 @@ export class DashboardComponent implements OnInit {
   @Input() selectedFolio: string;
   @Input() selectedProfesional: string;
 
+
+  start: string;
+  end: string;
+  obra: string;
+  st: string;
+  folio: string;
+  profesional: string;
+
+  XORDates(a, b): any {
+    return (a && b) || (!a && !b) ? true : false;
+  }
+  ANDDates(a, b): any {
+    return (a && b);
+  }
+  GreaterDates(a, b): any {
+    return (a > b) ? true : false;
+  }
+
   onSubmit(f: NgForm) {
     this.active = false;
-    if (!f.value["init"]) {
-      alert("Ingrese la fecha de inicio.");
+    if (!this.XORDates(f.value["init"], f.value["end"])) {
+      alert("Solo ingresaste una fecha.");
       return;
     }
-    if (!f.value["end"]) {
-      alert("Ingrese la fecha final.");
-      return;
-    }
-    if (f.value["init"] > f.value["end"]) {
+
+    if (this.GreaterDates(f.value["init"], f.value["end"])) {
       alert("Las fechas no tienen coherencia.")
       return;
     }
@@ -114,10 +128,22 @@ export class DashboardComponent implements OnInit {
     if (f.value["profesional"] == null) {
       console.log("Profesional no seleccionado");
     }
-    f.value["end"].setDate(f.value["end"].getDate() + 1);
-    console.log(f.value["end"]);
-    this.defaultDateStart = this.localISOTime(f.value["init"]);
-    this.defaultDateEnd = this.localISOTime(f.value["end"]);
+    if (this.ANDDates(f.value["init"], f.value["init"])) {
+      f.value["end"].setDate(f.value["end"].getDate() + 1);
+      console.log(f.value["end"]);
+      this.defaultDateStart = this.localISOTime(f.value["init"]);
+      this.defaultDateEnd = this.localISOTime(f.value["end"]);
+      this.start = this.defaultDateStart.toString();
+      this.end = this.defaultDateEnd.toString();
+    } else {
+      this.start = "";
+      this.end = "";
+    }
+
+    this.obra = f.value["obra"];
+    this.st = f.value["st"];
+    this.folio = f.value["folio"];
+    this.profesional = f.value["profesional"];
     this.active = true;
     //this.r.navigate['/home'];
     console.log("Form values -> ", f.value);

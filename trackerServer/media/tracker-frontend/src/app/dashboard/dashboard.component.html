@@ -31,8 +31,7 @@
                     [value]="10-2-2017"
                     name="init"
                     #init="ngModel"
-                    ngModel
-                    required>
+                    ngModel>
                   <button mdSuffix [mdDatepickerToggle]="pickerInit"></button>
                 </md-input-container>
                 <md-datepicker #pickerInit></md-datepicker>
@@ -46,8 +45,7 @@
                     [min]="minDate"
                     [max]="maxDate"
                     name="end"
-                    ngModel
-                    required>
+                    ngModel>
                   <button mdSuffix [mdDatepickerToggle]="pickerEnd"></button>
                 </md-input-container>
                 <md-datepicker #pickerEnd></md-datepicker>
@@ -63,7 +61,7 @@
                   <div class="item item-1" fxFlex="20%" fxFlexOrder="1">
                     <md-select placeholder="Obra" [(ngModel)]="selectedObra" name="obra">
                       <md-option *ngFor="let obra of obras" [value]="obra.value">
-                        {{obra.value}}
+                        {{obra.viewSelect}}
                       </md-option>
                     </md-select>
                     <p>
@@ -73,7 +71,7 @@
                   <div class="item item-2" fxFlex="30%" fxFlexOrder="2">
                     <md-select placeholder="ST" [(ngModel)]="selectedST" name="st">
                       <md-option *ngFor="let st of sts" [value]="st.value">
-                        {{st.value}}
+                        {{st.viewSelect}}
                       </md-option>
                     </md-select>
                     <p>
@@ -83,7 +81,7 @@
                   <div class="item item-3" fxFlex="30%" fxFlexOrder="3">
                     <md-select placeholder="Folio" [(ngModel)]="selectedFolio" name="folio">
                       <md-option *ngFor="let folio of folios" [value]="folio.value">
-                        {{folio.value}}
+                        {{folio.viewSelect}}
                       </md-option>
                     </md-select>
                     <p>
@@ -98,7 +96,7 @@
                       <md-option
                         *ngFor="let profesional of profesionales"
                         [value]="profesional.value">
-                        {{profesional.value}}
+                        {{profesional.viewSelect}}
                       </md-option>
                     </md-select>
                     <p>
@@ -124,12 +122,12 @@
         </app-data-table>
         <app-data-table
           *ngIf=active
-          [start]=defaultDateStart
-          [end]=defaultDateEnd
-          [obra]=selectedObra
-          [st]=selectedST
-          [folio]=selectedFolio
-          [profesional]=selectedProfesional>
+          [start]=start
+          [end]=end
+          [obra]=obra
+          [st]=st
+          [folio]=folio
+          [profesional]=profesional>
           Loading data-table...
         </app-data-table>
         {{defaultDateStart}}

@@ -1,6 +1,6 @@
 <div class="example-container mat-elevation-z8">
 
-  <md-table #table [dataSource]="dataSource" class="example-table" mdSort>
+  <md-table #table [dataSource]="dataSource" class="example-table">
 
     <!--- Note that these columns can be defined in any order.
           The actual rendered columns are set as a property on the row definition" -->
@@ -39,7 +39,7 @@
 
     <!-- Created Column -->
     <ng-container cdkColumnDef="date">
-      <md-header-cell *cdkHeaderCellDef md-sort-header disableClear="true">
+      <md-header-cell *cdkHeaderCellDef>
         Fecha
       </md-header-cell>
       <md-cell *cdkCellDef="let row">{{row.date}}</md-cell>
